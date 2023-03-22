@@ -1,0 +1,29 @@
+/*.logo-bag {
+    position: absolute;
+    margin-top: 7em;
+    width: 90%;
+    height: 230px;
+    background-image: url("../Img/logo2-trnslp1.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+*/
+
+body {
+    background-image: url("../Img/Login-Page/about.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.dev-img {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    border-radius: 50%;
+}
+
+.awd-img {
+    border-radius: 50%;
+}

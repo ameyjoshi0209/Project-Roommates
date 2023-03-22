@@ -1,0 +1,29 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+#owner-btn:focus #owner-btn:active {
+    outline: none !important;
+    box-shadow: none;
+}
+
+
+#owner-btn {
+    outline: sienna solid 2px;
+    cursor: pointer;
+    transition: all 0.4s;
+    border-radius: 50px;
+}
+
+#owner-btn:hover {
+    background-color: #ffffffb8;
+    color: #2F56B0;
+}
+
+#owner-btn:active {
+    background-color: rgb(98, 98, 98);
+    transform: translateY(4px);
+}
