@@ -1,15 +1,22 @@
 <?php
 $db = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
-$uname = $_POST['user'];
-$pass = md5($_POST['pass']);
+$uname = $_GET['user'];
+$pass = md5($_GET['pass']);
 
-if (isset($_POST['submit']) && !empty($_POST['submit'])) {
-    $data = pg_query($db, $sql);
+if (isset($_GET['submit']) && !empty($_GET['submit'])) {
+    $ret = pg_query($db, "select username,password from logindata");
 
     if (!$ret) {
         echo pg_last_error($db);
     } else {
-        echo "<script>alert('Records added successfully');</script>";
+        while ($data = pg_fetch_array($ret)) {
+            if (($uname == $data['username']) && ($pass == $data['password'])) {
+                header("Location: ../Pages/home.html");
+            } else {
+                echo "<script>alert('Invalid Credentials');
+                window.location.href='../Pages/login.php';</script>";
+            }
+        }
     }
     pg_close();
 }
@@ -43,7 +50,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
             border: none;
             border-radius: 2cm;
             backdrop-filter: blur(38px);
-            filter: brightness(87%);
+            filter: brightness(90%);
             width: 55rem;
             height: 45rem;
             justify-content: center;
@@ -96,7 +103,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
 </head>
 
 <body>
-    <form method="post">
+    <form method="get">
         <div class="container" style="margin-top: 5em;">
             <div class="row" style="display: flex;justify-content: center;">
                 <div class="col-sm-4">
@@ -106,10 +113,10 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
                     <label style="color: black;">Password</label><br>
                     <input class="txt" type="password" name="pass" required><br>
                     <a href="forget.html" style="padding: 0;">Forget Password</a><br><br>
-                    <button class="ab" href="#"><span>login</span></button>
+                    <input type="submit" class="ab" name="submit" value="login">
                     <p style="font-size: large; text-align: center; margin-left: 25px; margin-top: 30px; color: grey;">
                         Dont have
-                        an account? <a href="Register.html" style="padding: 0;">SignUp</a>
+                        an account? <a href="Register.php" style="padding: 0;">SignUp</a>
                     </p>
                 </div>
             </div>

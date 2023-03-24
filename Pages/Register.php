@@ -10,14 +10,25 @@ $pass = md5($_POST['pass']);
 $repass = md5($_POST['repass']);
 
 if (isset($_POST['submit']) && !empty($_POST['submit'])) {
+
+    if ($pass != $repass) {
+        echo "<script>alert('please confirm your password');
+        window.location.href='../Pages/Register.php';</script>";
+        exit();
+    }
+
+    $dup = pg_query($db, "select * from logindata");
+    while ($data = pg_fetch_array($dup)) {
+        if ($name == $data['name'] && $gender == $data['gender'] && $dob == $data['dob'] && $phone == $data['ph_no'] && $email == $data['email']) {
+            echo "<script>alert('User already exists');
+                window.location.href='../Pages/login.php';</script>";
+            exit();
+        }
+    }
     $sql = "insert into logindata(name, gender, dob, ph_no, email, username, password) values('$name','$gender','$dob', $phone, '$email', '$uname','$pass')";
     $ret = pg_query($db, $sql);
-
-    if (!$ret) {
-        echo pg_last_error($db);
-    } else {
-        echo "<script>alert('Records added successfully');</script>";
-    }
+    echo "<script>alert('Records added successfully');
+                window.location.href='../Pages/login.php';</script>";
     pg_close();
 }
 ?>
@@ -53,9 +64,9 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
             font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
             border: none;
             border-radius: 2cm;
-            backdrop-filter: blur(38px);
-            filter: brightness(87%);
-            width: 55rem;
+            backdrop-filter: blur(43px);
+            filter: brightness(90%);
+            width: 70rem;
             height: auto;
             justify-content: center;
             text-align: center;
@@ -63,7 +74,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
         }
 
         tr {
-            height: 37px;
+            height: 39px;
         }
 
         th {
@@ -102,19 +113,19 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
         }
 
         .txt {
-            margin-left: 12px;
+            margin-left: 20px;
             outline: none;
             border: none;
             border-radius: 10px;
-            height: 27px;
-            width: 17em;
+            height: 28px;
+            width: 19em;
         }
     </style>
 </head>
 
 <body>
     <div class="container" style="margin-top: 3em;">
-        <form method="post">
+        <form action="" method="post">
             <div class="row" style="display: flex;justify-content: center;">
                 <div class="col-sm-4">
                     <table style="display: flex;justify-content: center;">

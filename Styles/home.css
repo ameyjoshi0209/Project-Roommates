@@ -27,9 +27,8 @@
 
 .align {
     position: absolute;
-    top: 4px;
     right: 0;
-    margin-right: 10px;
+    bottom: 12px;
 }
 
 .btn-outline-primary {
