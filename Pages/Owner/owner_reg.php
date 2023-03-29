@@ -6,29 +6,29 @@ $dob = $_POST['date'];
 $phone = $_POST['phone'];
 $email = $_POST['email'];
 $uname = $_POST['user'];
-$pass = md5($_POST['pass']);
-$repass = md5($_POST['repass']);
+$pass = $_POST['pass'];
+$repass = $_POST['repass'];
 
 if (isset($_POST['submit']) && !empty($_POST['submit'])) {
 
     if ($pass != $repass) {
         echo "<script>alert('please confirm your password');
-        window.location.href='../Pages/Register.php';</script>";
+        window.location.href='../Owner/owner_reg.php';</script>";
         exit();
     }
 
-    $dup = pg_query($db, "select * from logindata");
+    $dup = pg_query($db, "select * from owner_login");
     while ($data = pg_fetch_array($dup)) {
         if ($name == $data['name'] && $gender == $data['gender'] && $dob == $data['dob'] && $phone == $data['ph_no'] && $email == $data['email']) {
             echo "<script>alert('User already exists');
-                window.location.href='../Pages/login.php';</script>";
+                window.location.href='../Owner/owner_login.php';</script>";
             exit();
         }
     }
-    $sql = "insert into logindata(name, gender, dob, ph_no, email, username, password) values('$name','$gender','$dob', $phone, '$email', '$uname','$pass')";
+    $sql = "insert into owner_login(name, gender, dob, ph_no, email, username, password) values('$name','$gender','$dob', $phone, '$email', '$uname','$pass')";
     $ret = pg_query($db, $sql);
     echo "<script>alert('Records added successfully');
-                window.location.href='../Pages/login.php';</script>";
+                window.location.href='../Owner/owner_login.php';</script>";
     pg_close();
 }
 ?>
@@ -44,7 +44,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
         body {
-            background-image: url("../Img/Login-Page/register.jpg");
+            background-image: url("../../Img/Login-Page/register.jpg");
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
@@ -129,7 +129,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
             <div class="row" style="display: flex;justify-content: center;">
                 <div class="col-sm-4">
                     <table style="display: flex;justify-content: center;">
-                        <h1 style="margin-bottom: 25px;">Sign Up</h1><br>
+                        <h1 style="margin-bottom: 25px;">Sign Up as Owner</h1><br>
                         <tr>
                             <th>Full Name </th>
                             <td><input class="txt" type="text" name="name" required></td>

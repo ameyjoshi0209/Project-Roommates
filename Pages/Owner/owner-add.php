@@ -1,23 +1,20 @@
 <?php
-$conn = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
-$result = pg_query($conn, "SELECT * FROM property WHERE p_id='" . $_GET['id'] . "'");
-$data = pg_fetch_assoc($result);
-if (isset($_GET['submit']) && !empty($_GET['submit'])) {
-    $result = pg_query(
-        $conn,
-        "UPDATE property SET p_name = '$_POST[name]',p_addr='$_POST[addr]',p_bhk='$_POST[room_type]',p_age='$_POST[age]',p_ph_no='$_POST[phone]',p_email='$_POST[email]',p_rent='$_POST[rent]',p_furnish='$_POST[furn]',p_about='$_POST[about]' where p_id='$data[p_id]'"
-    );
+session_start();
+$db = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
 
+if (isset($_POST['submit']) && !empty($_POST['submit'])) {
+    $oname = $_SESSION["oname"];
+    $ret = pg_query($db, "INSERT INTO property VALUES('$_POST[pid]', '$_POST[name]', '$_POST[addr]','$_POST[city]', '$_POST[room_type]', '$_POST[age]', '$_POST[phone]', '$_POST[email]','$_POST[rent]','$_POST[furn]','$_POST[about]','$oname')");
     if (!$ret) {
-        echo "<script>alert('Error');
-                window.location.href='../Pages/owner.php';</script>";
+        echo pg_last_error($db);
     } else {
-        echo "<script>alert('Record Updated Successfully');
-                window.location.href='../Pages/owner.php';</script>";
+        echo "<script>alert('Property added successfully');
+                window.location.href='../Owner/owner.php';</script>";
     }
 }
 pg_close();
 ?>
+
 <html eng="en">
 
 <head>
@@ -27,10 +24,9 @@ pg_close();
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs.jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
     <style>
         body {
-            background-image: url("../Img/Login-Page/owner-add.jpg");
+            background-image: url("../../Img/Login-Page/property.jpg");
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
@@ -83,7 +79,7 @@ pg_close();
             border-radius: 40px;
             display: block;
             width: 120px;
-            height: 45px;
+            height: 40px;
             line-height: 1.5;
             font-size: 20px;
             font-family: sans-serif;
@@ -109,7 +105,7 @@ pg_close();
         }
 
         .txt {
-            margin-left: 40px;
+            margin-left: 12px;
             outline: none;
             border: none;
             border-radius: 10px;
@@ -121,30 +117,42 @@ pg_close();
 
 <body>
     <div class="container" style="margin-top: 3em;">
-        <form name=update1 method="post">
+        <form action="" method="post">
             <div class="row" style="display: flex;justify-content: center;">
                 <div class="col-sm-4">
                     <table style="display: flex;justify-content: center;">
-                        <h1 style="margin-bottom: 25px;">Update Property</h1><br>
+                        <h1 style="margin-bottom: 25px;">Property Upload</h1><br>
                         <tr>
                             <th>Property ID Number </th>
-                            <td>
-                                <h4 class="txt"><?php echo $data['p_id']; ?></h4>
-                            </td>
+                            <td><input class="txt" type="text" name="pid" required></td>
                         </tr>
                         <tr>
                             <th>Property Name </th>
-                            <td><input class="txt" type="text" name="name" value="<?php echo $data['p_name']; ?>"></td>
+                            <td><input class="txt" type="text" name="name" required></td>
                         </tr>
                         <tr>
                             <th>Property Address</th>
-                            <td><input class="txt" type="text" name="addr" value="<?php echo $data['p_addr']; ?>"></td>
+                            <td><input class="txt" type="text" name="addr"></td>
+                        </tr>
+                        <tr>
+                            <th style="line-height: 2rem;">City </th>
+                            <td>
+                                <select class="txt" name="city">
+                                    <option>Pune</option>
+                                    <option>Banglore</option>
+                                    <option>Kolkata</option>
+                                    <option>Mumbai</option>
+                                    <option>Delhi</option>
+                                    <option>Gujarat</option>
+                                    <option>Kerala</option>
+                                    <option>Hyderabad</option>
+                                </select>
+                            </td>
                         </tr>
                         <tr>
                             <th style="line-height: 2rem;">BHK Type </th>
                             <td>
                                 <select class="txt" name="room_type">
-                                    <option><?php echo $data['p_bhk']; ?></option>
                                     <option>1 RK</option>
                                     <option>1 BHK</option>
                                     <option>2 BHK</option>
@@ -155,7 +163,7 @@ pg_close();
                         </tr>
                         <tr>
                             <th>Property Age (in years)</th>
-                            <td><input class="txt" type="text" name="age" value="<?php echo $data['p_age']; ?>"></td>
+                            <td><input class="txt" type="text" name="age"></td>
                         </tr>
                         <!--<tr>
                                 <th>Upload Images </th>
@@ -163,21 +171,20 @@ pg_close();
                                 </td>
                             <tr>-->
                         <th>Phone Number</th>
-                        <td><input class="txt" type="tel" name="phone" value="<?php echo $data['p_ph_no']; ?>"></td>
+                        <td><input class="txt" type="tel" name="phone"></td>
                         </tr>
                         <tr>
                             <th>Email</th>
-                            <td><input class="txt" type="text" name="email" value="<?php echo $data['p_email']; ?>"></td>
+                            <td><input class="txt" type="text" name="email"></td>
                         </tr>
                         <tr>
                             <th>Rent Per Month</th>
-                            <td><input class="txt" type="text" name="rent" value="<?php echo $data['p_rent']; ?>"></td>
+                            <td><input class="txt" type="text" name="rent"></td>
                         </tr>
                         <tr>
                             <th style="line-height: 2rem;">Furnished </th>
                             <td>
                                 <select class="txt" name="furn">
-                                    <option><?php echo $data['p_furnish']; ?></option>
                                     <option>Furnished</option>
                                     <option>Unfurnished</option>
                                     <option>Semi-furnished</option>
@@ -186,13 +193,13 @@ pg_close();
                         </tr>
                         <tr>
                             <th>About Property</th>
-                            <td><textarea style="resize: none;margin-left: 40px;margin-top: 4px;border: none;outline: none; border-radius: 10px;" rows="4" cols="31" name="about"><?php echo $data['p_about']; ?></textarea>
+                            <td>
+                                <textarea style="resize:none;height: 80px;margin-top:8px" class="txt" name="about" rows="4" cols="50"></textarea>
                             </td>
                         </tr>
                     </table>
                     <br>
-
-                    <input type=submit name=submit value=update class="ab">
+                    <input type="submit" name="submit" class="ab" value="upload">
                 </div>
             </div>
         </form>
@@ -200,16 +207,3 @@ pg_close();
 </body>
 
 </html>
-<?php
-if (isset($_POST['submit'])) {
-    $result = pg_query($conn, "UPDATE property SET p_name = '$_POST[name]',p_addr='$_POST[addr]',p_bhk='$_POST[room_type]',p_age='$_POST[age]',p_ph_no='$_POST[phone]',p_email='$_POST[email]',p_rent='$_POST[rent]',p_furnish='$_POST[furn]',p_about='$_POST[about]'
-where p_id='$data[p_id]'");
-    if (!$result) {
-        echo "<script>alert('Update unsuccessfull ')</script>";
-    } else {
-        echo "<script>alert('Record Updated Successfully');
-                window.location.href='../Pages/owner.php';</script>";
-    }
-}
-pg_close();
-?>

@@ -25,10 +25,11 @@
     width: 95%;
 }
 
-.align {
-    position: absolute;
-    right: 0;
-    bottom: 12px;
+.rounded-circle {
+    padding: 0;
+    margin-top: -12px;
+    height: 45px;
+    width: 45px;
 }
 
 .btn-outline-primary {
