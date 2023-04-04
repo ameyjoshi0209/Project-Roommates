@@ -1,18 +1,26 @@
 <?php
+session_start();
 $db = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
-$uname = $_POST['user'];
-$pass = md5($_POST['pass']);
 
-if (isset($_POST['submit']) && !empty($_POST['submit'])) {
-    $data = pg_query($db, $sql);
+if (isset($_GET['submit']) && !empty($_GET['submit'])) {
+    $pass = $_GET['pass'];
+    $ret = pg_query($db, "SELECT * FROM logindata WHERE username='" . $_GET["user"] . "' and password = '" . $pass . "'");
 
     if (!$ret) {
         echo pg_last_error($db);
     } else {
-        echo "<script>alert('Records added successfully');</script>";
+        $data = pg_fetch_array($ret);
+        if (is_array($data)) {
+            $_SESSION["uname"] = $_GET['user'];
+            $_SESSION["upass"] = $_GET['pass'];
+            header("Location: ../Tenant/home.php");
+        } else {
+            echo "<script>alert('Invalid Credentials');
+                window.location.href='../Tenant/login.php';</script>";
+        }
     }
-    pg_close();
 }
+pg_close();
 ?>
 
 <html eng="en">
@@ -26,7 +34,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
         body {
-            background-image: url("../Img/Login-Page/login.jpg");
+            background-image: url("../../Img/Login-Page/login.jpg");
             text-align: center;
             background-size: cover;
         }
@@ -43,9 +51,9 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
             border: none;
             border-radius: 2cm;
             backdrop-filter: blur(38px);
-            filter: brightness(87%);
+            filter: brightness(90%);
             width: 55rem;
-            height: 45rem;
+            height: auto;
             justify-content: center;
             text-align: center;
             font-size: 2rem;
@@ -92,24 +100,36 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
             border-radius: 10px;
             width: 16em;
         }
+
+        .role {
+            padding: 0;
+            font-family: 'Noto Sans';
+            font-size: 18px;
+            position: relative;
+            color: #F8ADA2;
+            text-decoration: none !important;
+            transition: all 0.5s;
+        }
     </style>
 </head>
 
 <body>
-    <form method="post">
+    <form method="get">
         <div class="container" style="margin-top: 5em;">
             <div class="row" style="display: flex;justify-content: center;">
                 <div class="col-sm-4">
-                    <h1>Login</h1><br>
+                    <h1>Tenant Login</h1><br>
                     <label style="color: black;">Username</label><br>
                     <input class="txt" type="text" name="user" required><br><br>
                     <label style="color: black;">Password</label><br>
                     <input class="txt" type="password" name="pass" required><br>
-                    <a href="forget.html" style="padding: 0;">Forget Password</a><br><br>
-                    <button class="ab" href="#"><span>login</span></button>
+                    <a href="../forget.html" style="padding: 0;">Forget Password</a><br><br>
+                    <a href="../Owner/owner_login.php" class="role">Login as Owner</a><br>
+                    <a href="../Admin/admin_login.php" class="role" style="top: 8px;">Login as Admin</a><br><br>
+                    <input type="submit" class="ab" name="submit" value="login">
                     <p style="font-size: large; text-align: center; margin-left: 25px; margin-top: 30px; color: grey;">
                         Dont have
-                        an account? <a href="Register.html" style="padding: 0;">SignUp</a>
+                        an account? <a href="../Tenant/Register.php" class="role" style="padding: 0;font-size: 15px;color: #fff;">SignUp</a>
                     </p>
                 </div>
             </div>

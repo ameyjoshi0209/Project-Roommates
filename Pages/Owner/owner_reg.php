@@ -6,18 +6,29 @@ $dob = $_POST['date'];
 $phone = $_POST['phone'];
 $email = $_POST['email'];
 $uname = $_POST['user'];
-$pass = md5($_POST['pass']);
-$repass = md5($_POST['repass']);
+$pass = $_POST['pass'];
+$repass = $_POST['repass'];
 
 if (isset($_POST['submit']) && !empty($_POST['submit'])) {
-    $sql = "insert into logindata(name, gender, dob, ph_no, email, username, password) values('$name','$gender','$dob', $phone, '$email', '$uname','$pass')";
-    $ret = pg_query($db, $sql);
 
-    if (!$ret) {
-        echo pg_last_error($db);
-    } else {
-        echo "<script>alert('Records added successfully');</script>";
+    if ($pass != $repass) {
+        echo "<script>alert('please confirm your password');
+        window.location.href='../Owner/owner_reg.php';</script>";
+        exit();
     }
+
+    $dup = pg_query($db, "select * from owner_login");
+    while ($data = pg_fetch_array($dup)) {
+        if ($name == $data['name'] && $gender == $data['gender'] && $dob == $data['dob'] && $phone == $data['ph_no'] && $email == $data['email']) {
+            echo "<script>alert('User already exists');
+                window.location.href='../Owner/owner_login.php';</script>";
+            exit();
+        }
+    }
+    $sql = "insert into owner_login(name, gender, dob, ph_no, email, username, password) values('$name','$gender','$dob', $phone, '$email', '$uname','$pass')";
+    $ret = pg_query($db, $sql);
+    echo "<script>alert('Records added successfully');
+                window.location.href='../Owner/owner_login.php';</script>";
     pg_close();
 }
 ?>
@@ -33,7 +44,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
         body {
-            background-image: url("../Img/Login-Page/register.jpg");
+            background-image: url("../../Img/Login-Page/register.jpg");
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
@@ -53,9 +64,9 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
             font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
             border: none;
             border-radius: 2cm;
-            backdrop-filter: blur(38px);
-            filter: brightness(87%);
-            width: 55rem;
+            backdrop-filter: blur(43px);
+            filter: brightness(90%);
+            width: 70rem;
             height: auto;
             justify-content: center;
             text-align: center;
@@ -63,7 +74,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
         }
 
         tr {
-            height: 37px;
+            height: 39px;
         }
 
         th {
@@ -102,23 +113,23 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
         }
 
         .txt {
-            margin-left: 12px;
+            margin-left: 20px;
             outline: none;
             border: none;
             border-radius: 10px;
-            height: 27px;
-            width: 17em;
+            height: 28px;
+            width: 19em;
         }
     </style>
 </head>
 
 <body>
     <div class="container" style="margin-top: 3em;">
-        <form method="post">
+        <form action="" method="post">
             <div class="row" style="display: flex;justify-content: center;">
                 <div class="col-sm-4">
                     <table style="display: flex;justify-content: center;">
-                        <h1 style="margin-bottom: 25px;">Sign Up</h1><br>
+                        <h1 style="margin-bottom: 25px;">Sign Up as Owner</h1><br>
                         <tr>
                             <th>Full Name </th>
                             <td><input class="txt" type="text" name="name" required></td>
