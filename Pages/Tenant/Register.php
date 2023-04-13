@@ -25,6 +25,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
             exit();
         }
     }
+
     $sql = "insert into logindata(name, gender, dob, ph_no, email, username, password) values('$name','$gender','$dob', $phone, '$email', '$uname','$pass')";
     $ret = pg_query($db, $sql);
     echo "<script>alert('Records added successfully');
@@ -125,7 +126,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
 
 <body>
     <div class="container" style="margin-top: 3em;">
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
             <div class="row" style="display: flex;justify-content: center;">
                 <div class="col-sm-4">
                     <table style="display: flex;justify-content: center;">
@@ -134,6 +135,10 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
                             <th>Full Name </th>
                             <td><input class="txt" type="text" name="name" required></td>
                         </tr>
+                        <tr>
+                            <th>Profile Image </th>
+                            <td><input class="txt" type="file" name="photo" accept="image/*">
+                            </td>
                         <tr>
                             <th style="line-height: 2rem;">Gender </th>
                             <td>

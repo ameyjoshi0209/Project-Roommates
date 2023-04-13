@@ -1,21 +1,21 @@
-<?php
-session_start();
-if (!empty($_SESSION["oname"])) {
-    $db = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
-
+<?php session_start();
+if (!empty($_SESSION["aname"])) {
+    $conn = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
+    $prop_id = $_GET["pid"];
+    $result = pg_query($conn, "SELECT * FROM property WHERE p_id='$prop_id'") or die("Query Failed");
+    $data = pg_fetch_assoc($result);
     if (isset($_POST['submit']) && !empty($_POST['submit'])) {
-        $oname = $_SESSION["oname"];
-        $ret = pg_query($db, "INSERT INTO property VALUES('$_POST[pid]', '$_POST[name]', '$_POST[addr]','$_POST[city]', '$_POST[room_type]', '$_POST[age]', '$_POST[phone]', '$_POST[email]','$_POST[rent]','$_POST[furn]','$_POST[about]','$oname','pending')");
-        if (!$ret) {
-            echo pg_last_error($db);
+        $result = pg_query($conn, "UPDATE property SET p_name = '$_POST[name]',p_addr='$_POST[addr]',p_bhk='$_POST[room_type]',p_age='$_POST[age]',p_ph_no='$_POST[phone]',p_email='$_POST[email]',p_rent='$_POST[rent]',p_furnish='$_POST[furn]',p_about='$_POST[about]'
+where p_id='$prop_id'");
+        if (!$result) {
+            echo "<script>alert('Update unsuccessfull')</script>";
         } else {
-            echo "<script>alert('Property under verification');
+            echo "<script>alert('Property Updated Successfully');
                 window.location.href='../Owner/owner.php';</script>";
         }
     }
 ?>
-
-    <html eng="en">
+    <html>
 
     <head>
         <title>Bootstrap</title>
@@ -24,9 +24,10 @@ if (!empty($_SESSION["oname"])) {
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs.jquery/3.5.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
         <style>
             body {
-                background-image: url("../../Img/Login-Page/property.jpg");
+                background-image: url("../../Img/Login-Page/owner-add.jpg");
                 background-position: center;
                 background-size: cover;
                 background-repeat: no-repeat;
@@ -79,7 +80,7 @@ if (!empty($_SESSION["oname"])) {
                 border-radius: 40px;
                 display: block;
                 width: 120px;
-                height: 40px;
+                height: 45px;
                 line-height: 1.5;
                 font-size: 20px;
                 font-family: sans-serif;
@@ -105,7 +106,7 @@ if (!empty($_SESSION["oname"])) {
             }
 
             .txt {
-                margin-left: 12px;
+                margin-left: 40px;
                 outline: none;
                 border: none;
                 border-radius: 10px;
@@ -117,27 +118,30 @@ if (!empty($_SESSION["oname"])) {
 
     <body>
         <div class="container" style="margin-top: 3em;">
-            <form action="" method="post">
+            <form name=update1 method="post">
                 <div class="row" style="display: flex;justify-content: center;">
                     <div class="col-sm-4">
                         <table style="display: flex;justify-content: center;">
-                            <h1 style="margin-bottom: 25px;">Property Upload</h1><br>
+                            <h1 style="margin-bottom: 25px;">Update Property</h1><br>
                             <tr>
                                 <th>Property ID Number </th>
-                                <td><input class="txt" type="text" name="pid" required></td>
+                                <td>
+                                    <h4 class="txt"><?php echo $data['p_id']; ?></h4>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Property Name </th>
-                                <td><input class="txt" type="text" name="name" required></td>
+                                <td><input class="txt" type="text" name="name" value="<?php echo $data['p_name']; ?>"></td>
                             </tr>
                             <tr>
                                 <th>Property Address</th>
-                                <td><input class="txt" type="text" name="addr"></td>
+                                <td><input class="txt" type="text" name="addr" value="<?php echo $data['p_addr']; ?>"></td>
                             </tr>
                             <tr>
                                 <th style="line-height: 2rem;">City </th>
                                 <td>
                                     <select class="txt" name="city">
+                                        <option><?php echo $data['p_city']; ?></option>
                                         <option>Pune</option>
                                         <option>Banglore</option>
                                         <option>Kolkata</option>
@@ -153,6 +157,7 @@ if (!empty($_SESSION["oname"])) {
                                 <th style="line-height: 2rem;">BHK Type </th>
                                 <td>
                                     <select class="txt" name="room_type">
+                                        <option><?php echo $data['p_bhk']; ?></option>
                                         <option>1 RK</option>
                                         <option>1 BHK</option>
                                         <option>2 BHK</option>
@@ -163,7 +168,7 @@ if (!empty($_SESSION["oname"])) {
                             </tr>
                             <tr>
                                 <th>Property Age (in years)</th>
-                                <td><input class="txt" type="text" name="age"></td>
+                                <td><input class="txt" type="text" name="age" value="<?php echo $data['p_age']; ?>"></td>
                             </tr>
                             <!--<tr>
                                 <th>Upload Images </th>
@@ -171,20 +176,21 @@ if (!empty($_SESSION["oname"])) {
                                 </td>
                             <tr>-->
                             <th>Phone Number</th>
-                            <td><input class="txt" type="tel" name="phone"></td>
+                            <td><input class="txt" type="tel" name="phone" value="<?php echo $data['p_ph_no']; ?>"></td>
                             </tr>
                             <tr>
                                 <th>Email</th>
-                                <td><input class="txt" type="text" name="email"></td>
+                                <td><input class="txt" type="text" name="email" value="<?php echo $data['p_email']; ?>"></td>
                             </tr>
                             <tr>
                                 <th>Rent Per Month</th>
-                                <td><input class="txt" type="text" name="rent"></td>
+                                <td><input class="txt" type="text" name="rent" value="<?php echo $data['p_rent']; ?>"></td>
                             </tr>
                             <tr>
                                 <th style="line-height: 2rem;">Furnished </th>
                                 <td>
                                     <select class="txt" name="furn">
+                                        <option><?php echo $data['p_furnish']; ?></option>
                                         <option>Furnished</option>
                                         <option>Unfurnished</option>
                                         <option>Semi-furnished</option>
@@ -193,13 +199,13 @@ if (!empty($_SESSION["oname"])) {
                             </tr>
                             <tr>
                                 <th>About Property</th>
-                                <td>
-                                    <textarea style="resize:none;height: 80px;margin-top:8px" class="txt" name="about" rows="4" cols="50"></textarea>
+                                <td><textarea style="resize: none;margin-left: 40px;margin-top: 4px;border: none;outline: none; border-radius: 10px;" rows="4" cols="31" name="about"><?php echo $data['p_about']; ?></textarea>
                                 </td>
                             </tr>
                         </table>
                         <br>
-                        <input type="submit" name="submit" class="ab" value="upload">
+
+                        <input type=submit name=submit value=update class="ab">
                     </div>
                 </div>
             </form>
@@ -209,5 +215,5 @@ if (!empty($_SESSION["oname"])) {
     </html>
 <?php
 } else {
-    echo "<script>window.location.href='../Owner/owner_login.php';</script>";
-} ?>
+    echo "<script>window.location.href='../Admin/admin_login.php';</script>";
+}

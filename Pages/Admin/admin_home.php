@@ -5,17 +5,16 @@ if (!empty($_SESSION["aname"])) { ?>
 
     <head>
         <title>Owner Side</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-        <link rel="stylesheet" href="../../Styles/owner.css" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+        <link rel="stylesheet" href="../../Styles/admin_home.css" />
     </head>
 
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark pt-1 pb-1">
-            <a class="navbar-brand text-primary" href="../Pages/admin_home.php" style="margin-left: 20px;">ROOMMATES</a>
+            <a class="navbar-brand text-primary" href="../Admin/admin_home.php" style="margin-left: 20px;">ROOMMATES</a>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    <a href="../Admin/admin_tenant.php"><button class="btn mt-1" id="owner-btn" style="margin-left: 25px; width:auto">
-                            Manage Tenant</button></a>
+                    <a id="owner-btn" class="nav-item nav-link" type="button" href="../Admin/admin_property.php">Manage Property</a>
                 </div>
             </div>
             <div class="align">
@@ -31,25 +30,18 @@ if (!empty($_SESSION["aname"])) { ?>
             </div>
         </nav>
         <br>
-        <h1 style="display: flex;justify-content: center;font-family: Google Sans;">Owner Management</h1>
 
-        <!--<div class="container-fluid">
-			<div class="row h-100">
-				<div class="col-2 bg-warning text-white text-center">
-					<a href="owner-add.html"><button class="btn mt-3" id="owner-btn">
-							Add</button></a><br>
-
-				</div>
-			</div>-->
+        <h1 style="display: flex;justify-content: center;font-family: Google Sans;">User Management</h1><br>
+        <h2 style="display: flex;justify-content: center;font-family: Google Sans;">Owner Management</h2>
         <div class="container-fluid">
             <div class="row mt-3 g-3">
                 <?php
                 $dbconn = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
-                $records = pg_query($dbconn, "select * from owner_login");
+                $records = pg_query($dbconn, "select * from owner_login where status='accepted'");
                 while ($data = pg_fetch_array($records)) {
                 ?>
                     <div class="col-sm-4">
-                        <div class="card">
+                        <div class="card" id="usr-card">
                             <div class="card-body">
                                 <h5 class="card-title">
                                     <?php echo $data['name']; ?></h5>
@@ -58,7 +50,7 @@ if (!empty($_SESSION["aname"])) { ?>
                                 <p class="card-text">Mob. No.: <?php echo $data['ph_no']; ?><br>Gender: <?php echo $data['gender']; ?><br>DOB: <?php echo $data['dob']; ?></p>
                                 <a href="update_owner.php?id=<?php echo $data['login_id']; ?>"><button class="btn mt-3 edit-btn">
                                         <img src="../../Img/update.svg" class="img-fluid" height="20px" width="20px"> Update</button></a>
-                                <a href="delete_owner.php?username=<?php echo $data['username']; ?>"><button class="btn mt-3 edit-btn">
+                                <a href="admin_action.php?name=<?php echo $data['username']; ?>&resp=9"><button class="btn mt-3 edit-btn">
                                         <img src="../../Img/trash.svg" class="img-fluid" height="20px" width="20px"> Delete</button></a>
                             </div>
                         </div>
@@ -66,10 +58,93 @@ if (!empty($_SESSION["aname"])) { ?>
                 <?php }  ?>
             </div>
         </div>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
+        <br><br>
+        <h2 style="display: flex;justify-content: center;font-family: Google Sans;">Tenant Management</h2>
+        <div class="container-fluid">
+            <div class="row mt-3 g-3">
+                <?php
+                $dbconn = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
+                $records = pg_query($dbconn, "select * from logindata where status='accepted'");
+                while ($data = pg_fetch_array($records)) {
+                ?>
+                    <div class="col-sm-4">
+                        <div class="card" id="usr-card">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <?php echo $data['name']; ?></h5>
+                                <h6><i>Username:<?php echo $data['username']; ?></i></h6>
+                                Email: <?php echo $data['email']; ?>
+                                <p class="card-text">Mob. No.: <?php echo $data['ph_no']; ?><br>Gender: <?php echo $data['gender']; ?><br>DOB: <?php echo $data['dob']; ?></p>
+                                <a href="update_tenant.php?id=<?php echo $data['login_id']; ?>"><button class="btn mt-3 edit-btn">
+                                        <img src="../../Img/update.svg" class="img-fluid" height="20px" width="20px"> Update</button></a>
+                                <a href="admin_action.php?name=<?php echo $data['username']; ?>&resp=10"><button class="btn mt-3 edit-btn">
+                                        <img src="../../Img/trash.svg" class="img-fluid" height="20px" width="20px"> Delete</button></a>
+                            </div>
+                        </div>
+                    </div>
+                <?php }  ?>
+            </div>
+        </div>
+
+
+        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions1" aria-labelledby="offcanvasWithBothOptionsLabel1" style="width: 30em;">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel1">Owner Related Notifications</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <div class="container-fluid">
+                    <div class="row g-3">
+                        <?php
+                        $rec1 = pg_query($dbconn, "select * from owner_login where status='pending'");
+                        while ($data = pg_fetch_array($rec1)) {
+                        ?>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">Verify <?php echo $data['username']; ?> Profile?</h6>
+                                    <a href="../Admin/admin_action.php?name=<?php echo $data["username"] ?>&resp=0"><button class="btn btn-success"><img src="../../Img/Admin-Home/accept.svg" height="20" width="25">Accept</button></a>
+                                    <a href="../Admin/admin_action.php?name=<?php echo $data["username"] ?>&resp=1"><button class=" btn btn-danger"><img src="../../Img/Admin-Home/reject.svg" height="26" width="26">Reject</button></a>
+                                    <a href="../Admin/admin_action.php?name=<?php echo $data["username"] ?>&resp=2"><button class=" btn btn-warning"><img src="../../Img/Admin-Home/details.svg" height="22" width="30">Details</button></a>
+                                </div>
+                            </div>
+                        <?php
+                        } ?>
+                    </div>
+                </div>
+            </div>
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel2">Tenant Related Notifications</h5>
+            </div>
+            <div class="offcanvas-body">
+                <div class="container-fluid">
+                    <div class="row g-3">
+                        <?php
+                        $rec2 = pg_query($dbconn, "select * from logindata where status='pending'");
+                        while ($data = pg_fetch_array($rec2)) {
+                        ?>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">Verify <?php echo $data['username']; ?> Profile?</h6>
+                                    <a href="../Admin/admin_action.php?name=<?php echo $data["username"] ?>&resp=3"><button class="btn btn-success"><img src="../../Img/Admin-Home/accept.svg" height="20" width="25">Accept</button></a>
+                                    <a href="../Admin/admin_action.php?name=<?php echo $data["username"] ?>&resp=4"><button class=" btn btn-danger"><img src="../../Img/Admin-Home/reject.svg" height="26" width="26">Reject</button></a>
+                                    <a href="../Admin/admin_action.php?name=<?php echo $data["username"] ?>&resp=5"><button class=" btn btn-warning"><img src="../../Img/Admin-Home/details.svg" height="22" width="30">Details</button></a>
+                                </div>
+                            </div>
+                        <?php
+                        } ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions1" aria-controls="offcanvasWithBothOptions" style="position: fixed;bottom: 15px;right: 25px;">
+            <img src=" ../../Img/Admin-Home/verify_profile.svg" height="37" width="27">
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                <?php echo pg_num_rows($rec1) + pg_num_rows($rec2); ?></span>
+        </button>
+        <br>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
     </body>
 
     </html>

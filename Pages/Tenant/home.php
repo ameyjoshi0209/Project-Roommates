@@ -35,6 +35,7 @@ if (!empty($_SESSION["uname"])) {
                         </button>
                         <ul class="dropdown-menu">
                             <h6 class="dropdown-header"><?php echo $_SESSION["uname"] ?></h6>
+                            <li><a class="dropdown-item" href="../Tenant/tenant_profile.php">My Profile</a></li>
                             <li><a class="dropdown-item" href="../Tenant/tenant_logout.php">Logout</a></li>
                         </ul>
                     </div>

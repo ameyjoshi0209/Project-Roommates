@@ -11,6 +11,12 @@ $repass = $_POST['repass'];
 
 if (isset($_POST['submit']) && !empty($_POST['submit'])) {
 
+    if ((str_word_count($phone) > 10) || (str_word_count($phone) < 10)) {
+        echo "<script>alert('please enter valid phone number');
+        window.location.href='../Owner/owner_reg.php';</script>";
+        exit();
+    }
+
     if ($pass != $repass) {
         echo "<script>alert('please confirm your password');
         window.location.href='../Owner/owner_reg.php';</script>";
@@ -25,7 +31,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
             exit();
         }
     }
-    $sql = "insert into owner_login(name, gender, dob, ph_no, email, username, password) values('$name','$gender','$dob', $phone, '$email', '$uname','$pass')";
+    $sql = "insert into owner_login(name, gender, dob, ph_no, email, username, password, status) values('$name','$gender','$dob', $phone, '$email', '$uname','$pass','pending')";
     $ret = pg_query($db, $sql);
     echo "<script>alert('Records added successfully');
                 window.location.href='../Owner/owner_login.php';</script>";

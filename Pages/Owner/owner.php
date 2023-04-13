@@ -45,24 +45,39 @@ if (!empty($_SESSION["oname"])) { ?>
 				$dbconn = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
 				$records = pg_query($dbconn, "select * from property where username='{$_SESSION['oname']}'");
 				while ($data = pg_fetch_array($records)) {
-				?>
-					<div class="col-sm-4">
-						<div class="card">
-							<div class="card-body">
-								<h5 class="card-title">
-									<?php echo $data['name']; ?></h5>
-								<i>Address:<?php echo $data['p_addr']; ?></i><br>
-								<b>Rent:<?php echo $data['p_rent']; ?>
-									<p class="card-text">Type:<?php echo $data['p_bhk']; ?><br>Furnished:<?php echo $data['p_furnish']; ?><br>Address:<?php echo $data['p_addr']; ?></p>
-								</b>
-								<a href="../Owner/update.php?id=<?php echo $data['p_id']; ?>"><button class="btn mt-3 edit-btn">
-										<img src="../../Img/update.svg" class="img-fluid" height="20px" width="20px"> Update</button></a>
-								<a href="../Owner/delete.php?id=<?php echo $data['p_id']; ?>"><button class="btn mt-3 edit-btn">
-										<img src="../../Img/trash.svg" class="img-fluid" height="20px" width="20px"> Delete</button></a>
+					if ($data['status'] == 'pending') { ?>
+						<div class="col-sm-4" style="background: black;padding: 0;border-radius: 2rem;">
+							<div class="card" style="opacity: 0.4;height: 14em;">
+								<div class="card-body">
+									<h5 class="card-title">
+										<?php echo $data['name']; ?></h5>
+									<i>Address:<?php echo $data['p_addr']; ?></i><br>
+									<b>Rent:<?php echo $data['p_rent']; ?>
+										<p class="card-text">Type:<?php echo $data['p_bhk']; ?><br>Furnished:<?php echo $data['p_furnish']; ?><br>Address:<?php echo $data['p_addr']; ?></p>
+									</b>
+								</div>
 							</div>
 						</div>
-					</div>
-				<?php }  ?>
+					<?php
+					} elseif ($data['status'] == 'accept') { ?>
+						<div class="col-sm-4">
+							<div class="card">
+								<div class="card-body">
+									<h5 class="card-title">
+										<?php echo $data['name']; ?></h5>
+									<i>Address:<?php echo $data['p_addr']; ?></i><br>
+									<b>Rent:<?php echo $data['p_rent']; ?>
+										<p class="card-text">Type:<?php echo $data['p_bhk']; ?><br>Furnished:<?php echo $data['p_furnish']; ?><br>Address:<?php echo $data['p_addr']; ?></p>
+									</b>
+									<a href="../Owner/update.php?id=<?php echo $data['p_id']; ?>"><button class="btn mt-3 edit-btn">
+											<img src="../../Img/update.svg" class="img-fluid" height="20px" width="20px"> Update</button></a>
+									<a href="../Owner/delete.php?id=<?php echo $data['p_id']; ?>"><button class="btn mt-3 edit-btn">
+											<img src="../../Img/trash.svg" class="img-fluid" height="20px" width="20px"> Delete</button></a>
+								</div>
+							</div>
+						</div>
+				<?php }
+				} ?>
 			</div>
 		</div>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

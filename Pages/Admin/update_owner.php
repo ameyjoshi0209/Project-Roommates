@@ -15,7 +15,6 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
                 window.location.href='../Admin/admin_home.php';</script>";
     }
 }
-pg_close();
 ?>
 
 <head>
@@ -112,7 +111,7 @@ pg_close();
             <div class="row" style="display: flex;justify-content: center;">
                 <div class="col-sm-4">
                     <table style="display: flex;justify-content: center;">
-                        <h1 style="margin-bottom: 25px;">Update Owner <?php echo $data["username"]; ?></h1><br>
+                        <h1 style="margin-bottom: 25px;">Update Owner <?php echo $data["name"]; ?></h1><br>
                         <tr>
                             <th>Full Name </th>
                             <td><input class="txt" type="text" name="name" value="<?php echo $data['name']; ?>"></td>

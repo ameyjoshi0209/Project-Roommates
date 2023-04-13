@@ -1,5 +1,5 @@
 <?php session_start();
-if (!empty($_SESSION["uname"])) {
+if (!empty($_SESSION["aname"])) {
     $conn = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
 ?>
 
@@ -135,6 +135,13 @@ if (!empty($_SESSION["uname"])) {
                 </div>
             </div>
         </div>
+        <div class="mt-5 text-center">
+            <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=6"><button class="btn btn-success"><img src="../../Img/Admin-Home/accept.svg" height="20" width="25">Accept</button></a>
+            <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=7"><button class=" btn btn-danger"><img src="../../Img/Admin-Home/reject.svg" height="24" width="26">Reject</button></a>
+            <a href="../Admin/admin_property.php"><button class=" btn btn-primary"><img src="../../Img/Admin-Home/details.svg" height="22" width="30">Back</button></a>
+            <div class="mt-2 text-center">
+            </div>
+        </div>
     </body>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -142,5 +149,5 @@ if (!empty($_SESSION["uname"])) {
     </html>
 <?php
 } else {
-    echo "<script>window.location.href='../Tenant/login.php';</script>";
+    echo "<script>window.location.href='../Tenant/admin_login.php';</script>";
 } ?>
