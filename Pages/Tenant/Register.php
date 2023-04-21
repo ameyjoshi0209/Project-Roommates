@@ -26,7 +26,10 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
         }
     }
 
-    $sql = "insert into logindata(name, gender, dob, ph_no, email, username, password) values('$name','$gender','$dob', $phone, '$email', '$uname','$pass')";
+    $target_file = $uname . '.jpg';
+    move_uploaded_file($_FILES['photo']['tmp_name'], '../../Uploaded_Images/User/Tenant/' . $target_file);
+
+    $sql = "insert into logindata(name, gender, dob, ph_no, email, username, password, status, image) values('$name','$gender','$dob', $phone, '$email', '$uname','$pass','pending','$target_file')";
     $ret = pg_query($db, $sql);
     echo "<script>alert('Records added successfully');
                 window.location.href='../Tenant/login.php';</script>";
@@ -139,15 +142,15 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
                             <th>Profile Image </th>
                             <td><input class="txt" type="file" name="photo" accept="image/*">
                             </td>
-                        <tr>
-                            <th style="line-height: 2rem;">Gender </th>
-                            <td>
-                                <select class="txt" name="gender" required>
-                                    <option>Male</option>
-                                    <option>Female</option>
-                                    <option>Other</option>
-                                </select>
-                            </td>
+                        </tr>
+                        <th style="line-height: 2rem;">Gender </th>
+                        <td>
+                            <select class="txt" name="gender" required>
+                                <option>Male</option>
+                                <option>Female</option>
+                                <option>Other</option>
+                            </select>
+                        </td>
                         </tr>
                         <tr>
                             <th>Date of Birth </th>

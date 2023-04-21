@@ -4,8 +4,21 @@ if (!empty($_SESSION["oname"])) {
     $db = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
 
     if (isset($_POST['submit']) && !empty($_POST['submit'])) {
-        $oname = $_SESSION["oname"];
-        $ret = pg_query($db, "INSERT INTO property VALUES('$_POST[pid]', '$_POST[name]', '$_POST[addr]','$_POST[city]', '$_POST[room_type]', '$_POST[age]', '$_POST[phone]', '$_POST[email]','$_POST[rent]','$_POST[furn]','$_POST[about]','$oname','pending')");
+
+        $img_array = array();
+        foreach ($_FILES['photo']['name'] as $key => $val) {
+            $target_file = $_POST['name'] . '-' . $key . '.jpg';
+            array_push($img_array, $target_file);
+            if (!file_exists('../../Uploaded_Images/Property/' . $_POST['pid'])) {
+                mkdir('../../Uploaded_Images/Property/' . $_POST['pid'], 0777, true);
+                move_uploaded_file($_FILES['photo']['tmp_name'][$key], '../../Uploaded_Images/Property/' . $_POST['pid'] . '/' . $target_file);
+            } else {
+                move_uploaded_file($_FILES['photo']['tmp_name'][$key], '../../Uploaded_Images/Property/' . $_POST['pid'] . '/' . $target_file);
+            }
+        }
+        $img_array = implode(",", $img_array);
+
+        $ret = pg_query($db, "INSERT INTO property VALUES('$_POST[pid]', '$_POST[name]', '$_POST[addr]','$_POST[city]', '$_POST[room_type]', '$_POST[age]', '$_POST[gender_pref]', '$_POST[prop_type]','$_POST[rent]','$_POST[furn]','$_POST[about]','{$_SESSION['oname']}','pending','$_POST[rules]','$img_array')");
         if (!$ret) {
             echo pg_last_error($db);
         } else {
@@ -105,19 +118,30 @@ if (!empty($_SESSION["oname"])) {
             }
 
             .txt {
-                margin-left: 12px;
+                margin-left: 20px;
                 outline: none;
                 border: none;
                 border-radius: 10px;
                 height: 27px;
                 width: 17em;
             }
+
+            .upl::-webkit-file-upload-button {
+                font-weight: bold;
+                margin-bottom: 5px;
+                margin-left: 20px;
+                color: dodgerblue;
+                padding: 0.5em;
+                border: thin solid grey;
+                border-radius: 30px;
+                cursor: pointer;
+            }
         </style>
     </head>
 
     <body>
         <div class="container" style="margin-top: 3em;">
-            <form action="" method="post">
+            <form action="" method="post" enctype="multipart/form-data">
                 <div class="row" style="display: flex;justify-content: center;">
                     <div class="col-sm-4">
                         <table style="display: flex;justify-content: center;">
@@ -131,8 +155,8 @@ if (!empty($_SESSION["oname"])) {
                                 <td><input class="txt" type="text" name="name" required></td>
                             </tr>
                             <tr>
-                                <th>Property Address</th>
-                                <td><input class="txt" type="text" name="addr"></td>
+                                <th>Property Images </th>
+                                <td><input class="upl" type="file" name="photo[]" accept="image/*" multiple value="upload" required /></td>
                             </tr>
                             <tr>
                                 <th style="line-height: 2rem;">City </th>
@@ -165,17 +189,24 @@ if (!empty($_SESSION["oname"])) {
                                 <th>Property Age (in years)</th>
                                 <td><input class="txt" type="text" name="age"></td>
                             </tr>
-                            <!--<tr>
-                                <th>Upload Images </th>
-                                <td><input class="txt" type="file" name="photo" multiple="multiple" accept="image/*">
+                            <tr>
+                                <th>Tenant Preference</th>
+                                <td>
+                                    <select class="txt" name="gender_pref">
+                                        <option>Only Male Bachelors</option>
+                                        <option>Only Female Bachelors</option>
+                                        <option>Male or Female Bachleors</option>
+                                    </select>
                                 </td>
-                            <tr>-->
-                            <th>Phone Number</th>
-                            <td><input class="txt" type="tel" name="phone"></td>
                             </tr>
                             <tr>
-                                <th>Email</th>
-                                <td><input class="txt" type="text" name="email"></td>
+                                <th>Property Type </th>
+                                <td>
+                                    <select class="txt" name="prop_type">
+                                        <option>PG</option>
+                                        <option>Flat</option>
+                                    </select>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Rent Per Month</th>
@@ -194,7 +225,13 @@ if (!empty($_SESSION["oname"])) {
                             <tr>
                                 <th>About Property</th>
                                 <td>
-                                    <textarea style="resize:none;height: 80px;margin-top:8px" class="txt" name="about" rows="4" cols="50"></textarea>
+                                    <textarea style="resize:none;height: 80px;margin-top:8px" class="txt" name="about" rows="4" cols="50" placeholder="Write any description of your property"></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Rules regarding Property</th>
+                                <td>
+                                    <textarea style="resize:none;height: 80px;margin-top:8px" class="txt" name="rules" rows="4" cols="50" placeholder="Write any rules regarding property"></textarea>
                                 </td>
                             </tr>
                         </table>

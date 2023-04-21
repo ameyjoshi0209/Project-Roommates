@@ -23,7 +23,7 @@ if (!empty($_SESSION["aname"])) { ?>
                     </button>
                     <ul class="dropdown-menu">
                         <h6 class="dropdown-header"><?php echo $_SESSION["aname"] ?></h6>
-                        <li><a class="dropdown-item" href="../Admin/admin_logout.php">Logout</a></li>
+                        <li><a class="dropdown-item" href="../Admin/admin_logout.php"><img src="../../Img/Admin-Home/logout.svg" height="17" width="25"> Logout</a></li>
                     </ul>
                 </div>
             </div>
@@ -51,6 +51,8 @@ if (!empty($_SESSION["aname"])) { ?>
                                         <img src="../../Img/update.svg" class="img-fluid" height="20px" width="20px"> Update</button></a>
                                 <a href="admin_action.php?pid=<?php echo $data['p_id']; ?>&resp=7"><button class="btn mt-3 edit-btn">
                                         <img src="../../Img/trash.svg" class="img-fluid" height="20px" width="20px"> Delete</button></a>
+                                <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=8"><button class=" btn mt-3 edit-btn">
+                                        <img src="../../Img/Admin-Home/details.svg" height="20" width="30">Details</button></a>
                             </div>
                         </div>
                     </div>
@@ -59,7 +61,7 @@ if (!empty($_SESSION["aname"])) { ?>
         </div>
 
 
-        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel">
+        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions" aria-labelledby="offcanvasWithBothOptionsLabel" style="width: 30em;">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">Property Related Notifications</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -68,18 +70,33 @@ if (!empty($_SESSION["aname"])) { ?>
                 <div class="container-fluid">
                     <div class="row g-3">
                         <?php
-                        $rec = pg_query($dbconn, "select * from property where status='pending'");
-                        while ($data = pg_fetch_array($rec)) {
-                        ?>
-                            <div class="card">
-                                <div class="card-body">
-                                    <h6 class="card-title">Verify <?php echo $data['username']; ?> Property?</h6>
-                                    <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=6"><button class="btn btn-success"><img src="../../Img/Admin-Home/accept.svg" height="20" width="25">Accept</button></a>
-                                    <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=7"><button class=" btn btn-danger"><img src="../../Img/Admin-Home/reject.svg" height="26" width="26">Reject</button></a>
-                                    <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=8"><button class=" btn btn-warning"><img src="../../Img/Admin-Home/details.svg" height="22" width="30">Details</button></a>
+                        if (isset($_SESSION["Ppid"]) && !empty($_SESSION["Ppid"])) {
+                            $rec = pg_query($dbconn, "select * from property where status='updating'");
+                            while ($data = pg_fetch_array($rec)) { ?>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title"><?php echo $data['username']; ?> requested Property updation?</h6>
+                                        <a href="../Admin/admin_action.php?resp=20"><button class="btn btn-success"><img src="../../Img/Admin-Home/accept.svg" height="20" width="25">Accept</button></a>
+                                        <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=21"><button class=" btn btn-danger"><img src="../../Img/Admin-Home/reject.svg" height="26" width="26">Reject</button></a>
+                                        <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=22"><button class=" btn btn-warning"><img src="../../Img/Admin-Home/details.svg" height="22" width="30">Details</button></a>
+                                    </div>
                                 </div>
-                            </div>
+                            <?php
+                            }
+                        } else {
+                            $rec = pg_query($dbconn, "select * from property where status='pending'");
+                            while ($data = pg_fetch_array($rec)) {
+                            ?>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Verify <?php echo $data['username']; ?> Property?</h6>
+                                        <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=6"><button class="btn btn-success"><img src="../../Img/Admin-Home/accept.svg" height="20" width="25">Accept</button></a>
+                                        <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=7"><button class=" btn btn-danger"><img src="../../Img/Admin-Home/reject.svg" height="26" width="26">Reject</button></a>
+                                        <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=8"><button class=" btn btn-warning"><img src="../../Img/Admin-Home/details.svg" height="22" width="30">Details</button></a>
+                                    </div>
+                                </div>
                         <?php
+                            }
                         } ?>
                     </div>
                 </div>

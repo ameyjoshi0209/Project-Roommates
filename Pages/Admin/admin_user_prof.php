@@ -12,6 +12,15 @@ if (!empty($_SESSION["aname"])) {
     </head>
 
     <body>
+        <?php
+        $username = $_GET['username'];
+        if ($_GET['role'] == 'owner') {
+            $records1 = pg_query($dbconn, "select * from owner_login where username='$username'");
+            $data = pg_fetch_assoc($records1);
+        } else {
+            $records = pg_query($dbconn, "select * from logindata where username='$username'");
+            $data = pg_fetch_assoc($records);
+        } ?>
         <div class="sem-bag">
             <div class="container-fluid position-absolute" id="nav-contain">
                 <nav class="navbar navbar-expand-lg navbar-dark bg-dark pb-2 pt-2" style="border-radius: 20px;">
@@ -25,25 +34,23 @@ if (!empty($_SESSION["aname"])) {
                     </div>
                     <div class="btn-group dropstart">
                         <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="top: 6px;right: 5px;border: none;">
-                            <img src="https://t3.ftcdn.net/jpg/00/64/67/52/360_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg" class="rounded-circle nav-prof">
+                            <img src="../../Uploaded_Images/User/<?php if ($_GET['role'] == 'owner') echo "Owner";
+                                                                    else echo "Tenant"; ?>/<?php echo $data['image'] ?>" class="rounded-circle nav-prof">
                         </button>
                         <ul class="dropdown-menu">
                             <h6 class="dropdown-header"><?php echo $_SESSION["aname"] ?></h6>
-                            <li><a class="dropdown-item" href="../Tenant/admin_logout.php">Logout</a></li>
+                            <li><a class="dropdown-item" href="../Admin/admin_logout.php"><img src="../../Img/Admin-Home/logout.svg" height="17" width="25"> Logout</a></li>
                         </ul>
                     </div>
                 </nav>
             </div>
         </div>
-        <?php
-        $username = $_GET['username'];
-        $records = pg_query($dbconn, "select * from owner_login where username='$username'");
-        $data = pg_fetch_assoc($records);
-        ?>
+
         <div class="container rounded bg-white mt-5 mb-5">
             <div class="row">
                 <div class="d-flex flex-column align-items-center text-center">
-                    <img class="rounded-circle mt-5" width="250px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
+                    <img class="rounded-circle mt-5 mb-4" width="250px" src="../../Uploaded_Images/User/<?php if ($_GET['role'] == 'owner') echo "Owner";
+                                                                                                        else echo "Tenant"; ?>/<?php echo $data['image'] ?>">
                     <span class="font-weight-bold">
                         <h4><?php echo $data["name"] ?></h4>
                     </span>
@@ -71,25 +78,22 @@ if (!empty($_SESSION["aname"])) {
                             <div class="col-md-12"><label class="labels">Date of Birth</label><input type="date" class="form-control" value="<?php echo $data["dob"] ?>" readonly></div>
                             <div class="col-md-12"><label class="labels">Gender</label><input type="text" class="form-control" value="<?php echo $data["gender"] ?>" readonly></div>
                         </div>
-                        <?php
-                        if ($_GET['role'] == 'owner') { ?>
-                            <div class="mt-5 text-center">
-                                <a href="../Admin/admin_add_prop.php?name=<?php echo $data["username"] ?>&resp=0"><button class="btn btn-success"><img src="../../Img/Admin-Home/accept.svg" height="20" width="25">Accept</button></a>
-                                <a href="../Admin/admin_add_prop.php?name=<?php echo $data["username"] ?>&resp=1"><button class=" btn btn-danger"><img src="../../Img/Admin-Home/reject.svg" height="26" width="26">Reject</button></a>
-                                <a href="../Admin/admin_home.php"><button class=" btn btn-primary"><img src="../../Img/Admin-Home/details.svg" height="22" width="30">Back</button></a>
-                                <div class="mt-2 text-center">
+                        <?php if ($data['status'] == 'pending') {
+                            if ($_GET['role'] == 'owner') { ?>
+                                <div class="mt-5 text-center">
+                                    <a href="../Admin/admin_add_prop.php?name=<?php echo $data["username"] ?>&resp=0"><button class="btn btn-success"><img src="../../Img/Admin-Home/accept.svg" height="20" width="25">Accept</button></a>
+                                    <a href="../Admin/admin_add_prop.php?name=<?php echo $data["username"] ?>&resp=1"><button class=" btn btn-danger"><img src="../../Img/Admin-Home/reject.svg" height="26" width="26">Reject</button></a>
+                                    <a href="../Admin/admin_home.php"><button class=" btn btn-primary"><img src="../../Img/Admin-Home/details.svg" height="22" width="30">Back</button></a>
                                 </div>
-                            </div>
-                        <?php
-                        } else { ?>
-                            <div class="mt-5 text-center">
-                                <a href="../Admin/admin_add_prop.php?name=<?php echo $data["username"] ?>&resp=3"><button class="btn btn-success"><img src="../../Img/Admin-Home/accept.svg" height="20" width="25">Accept</button></a>
-                                <a href="../Admin/admin_add_prop.php?name=<?php echo $data["username"] ?>&resp=4"><button class=" btn btn-danger"><img src="../../Img/Admin-Home/reject.svg" height="26" width="26">Reject</button></a>
-                                <a href="../Admin/admin_home.php"><button class=" btn btn-primary"><img src="../../Img/Admin-Home/details.svg" height="22" width="30">Back</button></a>
-                                <div class="mt-2 text-center">
+                            <?php
+                            } else { ?>
+                                <div class="mt-5 text-center">
+                                    <a href="../Admin/admin_add_prop.php?name=<?php echo $data["username"] ?>&resp=3"><button class="btn btn-success"><img src="../../Img/Admin-Home/accept.svg" height="20" width="25">Accept</button></a>
+                                    <a href="../Admin/admin_add_prop.php?name=<?php echo $data["username"] ?>&resp=4"><button class=" btn btn-danger"><img src="../../Img/Admin-Home/reject.svg" height="26" width="26">Reject</button></a>
+                                    <a href="../Admin/admin_home.php"><button class=" btn btn-primary"><img src="../../Img/Admin-Home/details.svg" height="22" width="30">Back</button></a>
                                 </div>
-                            </div>
                         <?php
+                            }
                         } ?>
                     </div>
                 </div>
@@ -101,5 +105,5 @@ if (!empty($_SESSION["aname"])) {
     </html>
 <?php
 } else {
-    echo "<script>window.location.href='../Tenant/admin_login.php';</script>";
+    echo "<script>window.location.href='../Admin/admin_login.php';</script>";
 } ?>

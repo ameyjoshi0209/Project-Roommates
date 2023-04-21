@@ -175,12 +175,25 @@ where p_id='$prop_id'");
                                 <td><input class="txt" type="file" name="photo" multiple="multiple" accept="image/*">
                                 </td>
                             <tr>-->
-                            <th>Phone Number</th>
-                            <td><input class="txt" type="tel" name="phone" value="<?php echo $data['p_ph_no']; ?>"></td>
+                            <th>Tenant Preference</th>
+                            <td>
+                                <select class="txt" name="gender_pref">
+                                    <option><?php echo $data['p_gender']; ?></option>
+                                    <option>Only Male Bachelors</option>
+                                    <option>Only Female Bachelors</option>
+                                    <option>Male or Female Bachleors</option>
+                                </select>
+                            </td>
                             </tr>
                             <tr>
-                                <th>Email</th>
-                                <td><input class="txt" type="text" name="email" value="<?php echo $data['p_email']; ?>"></td>
+                                <th>Property Type</th>
+                                <td>
+                                    <select class="txt" name="prop_type">
+                                        <option><?php echo $data['p_type'] ?></option>
+                                        <option>PG</option>
+                                        <option>Flat</option>
+                                    </select>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Rent Per Month</th>
@@ -200,6 +213,12 @@ where p_id='$prop_id'");
                             <tr>
                                 <th>About Property</th>
                                 <td><textarea style="resize: none;margin-left: 40px;margin-top: 4px;border: none;outline: none; border-radius: 10px;" rows="4" cols="31" name="about"><?php echo $data['p_about']; ?></textarea>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Rules regarding Property</th>
+                                <td>
+                                    <textarea style="resize:none;height: 80px;margin-top:8px" class="txt" name="rules" rows="4" cols="50"><?php echo $data['p_rules']; ?></textarea>
                                 </td>
                             </tr>
                         </table>

@@ -10,10 +10,13 @@ if (isset($_GET['submit']) && !empty($_GET['submit'])) {
         echo pg_last_error($db);
     } else {
         $data = pg_fetch_array($ret);
-        if (is_array($data)) {
+        if (is_array($data) && $data["status"] == 'accepted') {
             $_SESSION["uname"] = $_GET['user'];
-            $_SESSION["upass"] = $_GET['pass'];
+            $_SESSION["uimage"] = '../../Uploaded_Images/User/Tenant/' . $data["image"];
             header("Location: ../Tenant/home.php");
+        } elseif ((is_array($data) && ($data["status"] == 'pending'))) {
+            echo "<script>alert('Account under verification. Please try later');
+                window.location.href='../Tenant/login.php';</script>";
         } else {
             echo "<script>alert('Invalid Credentials');
                 window.location.href='../Tenant/login.php';</script>";

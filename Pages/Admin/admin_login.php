@@ -11,7 +11,6 @@ if (isset($_GET['submit']) && !empty($_GET['submit'])) {
         $data = pg_fetch_array($ret);
         if (is_array($data)) {
             $_SESSION["aname"] = $_GET['user'];
-            $_SESSION["apass"] = $_GET['pass'];
             header("Location: ../Admin/admin_home.php");
         } else {
             echo "<script>alert('Invalid Credentials');

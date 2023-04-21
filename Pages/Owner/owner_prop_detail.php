@@ -1,5 +1,5 @@
 <?php session_start();
-if (!empty($_SESSION["aname"])) {
+if (!empty($_SESSION["oname"])) {
     $conn = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
 ?>
 
@@ -23,25 +23,15 @@ if (!empty($_SESSION["aname"])) {
                 max-width: 700px;
             }
 
-            .carousel-indicators [data-bs-target] {
-                background: saddlebrown;
-                position: relative;
-                top: 36px;
-                width: 11px;
-                height: 11px;
-                border: none;
-                border-radius: 100%;
-            }
-
             .prop {
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 font-size: medium;
             }
 
             table {
-                padding-left: 50px;
-                line-height: 30px;
-
+                font-size: 19px;
+                margin-left: 25px;
+                line-height: 40px;
                 width: 100%;
             }
 
@@ -57,7 +47,6 @@ if (!empty($_SESSION["aname"])) {
                 margin-left: 8px;
                 padding: 10px;
                 box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-
             }
         </style>
     </head>
@@ -66,30 +55,17 @@ if (!empty($_SESSION["aname"])) {
     $prop_id = $_GET["pid"];
     $records = pg_query($conn, "select * from property where p_id='$prop_id'");
     $data = pg_fetch_assoc($records);
-    $imgs = explode(",", $data['images']);
-    $img_count = count($imgs);
     ?>
+
 
     <body style="background-color: rgb(210, 241, 241);">
         <div class="container">
-            <div class="row">
-                <h1 style="padding-left: 40%;"><?php echo $data['p_name']; ?></h1>
-                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true" style="display: flex;justify-content: center;padding: 0;margin-top: 40px;">
-                    <div class="carousel-indicators">
-                        <?php
-                        if ($img_count == 1) { ?>
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                        <?php
-                        } elseif ($img_count > 1) { ?>
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                            <?php for ($i = 1; $i < $img_count; $i++) { ?>
-                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="<?php echo $i; ?>"></button>
-                        <?php
-                            }
-                        } ?>
-                    </div>
+            <div class="row" style="display: flex; justify-content: center;">
+                <h1 class="d-flex justify-content-center" style="font-size: 90px;"><?php echo $data['p_name']; ?></h1>
+                <div id="carouselExampleControls" class="carousel slide w-100" data-bs-ride="carousel" style="display: flex;justify-content: center;padding: 0;margin-top: 40px;">
                     <div class="carousel-inner">
                         <?php
+                        $imgs = explode(",", $data['images']);
                         foreach ($imgs as $value => $key) {
                             if ($value == 0) { ?>
                                 <div class="carousel-item active">
@@ -106,11 +82,19 @@ if (!empty($_SESSION["aname"])) {
                         }
                         ?>
                     </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
             </div>
             <br><br>
-            <div class="row">
-                <h2>Property Details</h2>
+            <div class="row d-flex justify-content-center">
+                <h2 class="mt-4 mb-5">Property Details</h2>
                 <table>
                     <tr>
                         <th>Property name</th>
@@ -145,7 +129,7 @@ if (!empty($_SESSION["aname"])) {
                         <td><?php echo $data['p_gender']; ?></td>
                     </tr>
                 </table>
-                <div class="prop">
+                <div class="prop mt-4 mb-3">
                     <h2>About this Property</h2>
                     <p><?php echo $data['p_about']; ?></p>
                 </div>

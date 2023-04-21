@@ -1,5 +1,6 @@
 <?php
 session_start();
-session_destroy();
+unset($_SESSION["oname"]);
+unset($_SESSION["oimage"]);
 echo "<script>alert('Logged out successfully');
                 window.location.href='../Owner/owner_login.php';</script>";
