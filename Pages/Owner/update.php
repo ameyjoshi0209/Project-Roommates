@@ -18,7 +18,7 @@ if (!empty($_SESSION["oname"])) {
             }
             $img_array = implode(",", $img_array);
         }
-        header("Location: ../Admin/admin_action.php?Ppid=$_POST[pid]&Pname=$_POST[name]&Paddr=$_POST[addr]&Pcity=$_POST[city]&Proom_type=$_POST[room_type]&Page=$_POST[age]&Pgender_pref=$_POST[gender_pref]&Pprop_type=$_POST[prop_type]&Prent=$_POST[rent]&Pfurn=$_POST[furn]&Pabout=$_POST[about]&Prules=$_POST[rules]&img_arr=$img_array&resp=19");
+        header("Location: ../Admin/admin_action.php?Ppid=$_POST[pid]&Pname=$_POST[name]&Paddr=$_POST[addr]&Pcity=$_POST[city]&Proom_type=$_POST[room_type]&Page=$_POST[age]&Pgender_pref=$_POST[gender_pref]&Pprop_type=$_POST[prop_type]&Prent=$_POST[rent]&Pfurn=$_POST[furn]&Pabout=$_POST[about]&Prules=$_POST[rules]&Pdeposit=$_POST[deposit]&img_arr=$img_array&resp=19");
     }
     pg_close();
 ?>
@@ -216,6 +216,10 @@ if (!empty($_SESSION["oname"])) {
                                         <option>Flat</option>
                                     </select>
                                 </td>
+                            </tr>
+                            <tr>
+                                <th>Deposit Amount</th>
+                                <td><input class="txt" type="text" name="deposit" value="<?php echo $data['p_deposit']; ?>"></td>
                             </tr>
                             <tr>
                                 <th>Rent Per Month</th>

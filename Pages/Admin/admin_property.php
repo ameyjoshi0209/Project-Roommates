@@ -16,6 +16,7 @@ if (!empty($_SESSION["aname"])) { ?>
                     <a id="owner-btn" class="nav-item nav-link" type="button" href="../Admin/admin_home.php">Manage Users</a>
                 </div>
             </div>
+            <a href="../Admin/dash.php"><button class="btn btn-warning">info</button></a>
             <div class="align">
                 <div class="btn-group dropstart">
                     <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="box-shadow: none;">
@@ -33,18 +34,20 @@ if (!empty($_SESSION["aname"])) { ?>
 
 
         <div class="container-fluid">
-            <div class="row mt-3 g-3">
+            <div class="row mt-3 g-3 mb-4">
                 <?php
                 $dbconn = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
                 $records = pg_query($dbconn, "select * from property where status='accepted'");
-                while ($data = pg_fetch_array($records)) {
-                ?>
+                while ($data = pg_fetch_array($records)) { ?>
                     <div class="col-sm-4">
                         <div class="card" id="usr-card">
                             <div class="card-body">
                                 <h5 class="card-title">
                                     <?php echo $data['p_name']; ?></h5>
-                                <h6><i>Owner Name: <?php echo $data['username']; ?></i></h6>
+                                <h6><i>Owner Name: <?php
+                                                    $nm = pg_query($dbconn, "select name from owner_login where username in (select username from property where p_id='$data[p_id]');");
+                                                    $nm = pg_fetch_row($nm);
+                                                    echo $nm[0] ?></i></h6>
                                 E-mail: <?php echo $data['p_email']; ?>
                                 <p class="card-text">Mob. No.: <?php echo $data['p_ph_no']; ?><br>Rent: <?php echo $data['p_rent']; ?><br>City: <?php echo $data['p_city']; ?></p>
                                 <a href="update_property.php?pid=<?php echo $data['p_id']; ?>"><button class="btn mt-3 edit-btn">
@@ -56,7 +59,8 @@ if (!empty($_SESSION["aname"])) { ?>
                             </div>
                         </div>
                     </div>
-                <?php }  ?>
+                <?php
+                } ?>
             </div>
         </div>
 
@@ -89,7 +93,7 @@ if (!empty($_SESSION["aname"])) { ?>
                             ?>
                                 <div class="card">
                                     <div class="card-body">
-                                        <h6 class="card-title">Verify <?php echo $data['username']; ?> Property?</h6>
+                                        <h6 class="card-title">Verify Property of <?php echo $data['username']; ?>?</h6>
                                         <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=6"><button class="btn btn-success"><img src="../../Img/Admin-Home/accept.svg" height="20" width="25">Accept</button></a>
                                         <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=7"><button class=" btn btn-danger"><img src="../../Img/Admin-Home/reject.svg" height="26" width="26">Reject</button></a>
                                         <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=8"><button class=" btn btn-warning"><img src="../../Img/Admin-Home/details.svg" height="22" width="30">Details</button></a>

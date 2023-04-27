@@ -53,28 +53,55 @@ if (!empty($_SESSION["oname"])) { ?>
 							<div class="card" style="opacity: 0.5;background-color: black;height: 13.8em; color: white;">
 								<div class="card-body">
 									<h5 class="card-title">
-										<?php echo $data['name']; ?></h5>
-									<i>Address:<?php echo $data['p_addr']; ?></i><br>
-									<b>Rent:<?php echo $data['p_rent']; ?>
-										<p class="card-text">Type:<?php echo $data['p_bhk']; ?><br>Furnished:<?php echo $data['p_furnish']; ?><br>Address:<?php echo $data['p_addr']; ?></p>
+										<?php echo $data['p_name']; ?></h5>
+									<h6><?php echo $data['p_id']; ?></h6>
+									<i>Deposit: <?php echo $data['p_deposit']; ?></i><br>
+									<b>Rent: <?php echo $data['p_rent']; ?>
+										<p class="card-text">Type: <?php echo $data['p_bhk']; ?><br>Furnished: <?php echo $data['p_furnish']; ?><br>Address:<?php echo $data['p_addr']; ?></p>
 									</b>
 								</div>
 							</div>
 						</div>
 					<?php
-					} elseif ($data['status'] == 'accepted') { ?>
+					} elseif ($data['status'] == 'accepted') {
+						if ($data['rented_status'] == 'f') ?>
 						<div class="col-sm-4">
 							<div class="card">
 								<div class="card-body">
 									<h5 class="card-title">
-										<?php echo $data['name']; ?></h5>
-									<i>Address:<?php echo $data['p_addr']; ?></i><br>
-									<b>Rent:<?php echo $data['p_rent']; ?>
-										<p class="card-text">Type:<?php echo $data['p_bhk']; ?><br>Furnished:<?php echo $data['p_furnish']; ?><br>Address:<?php echo $data['p_addr']; ?></p>
+										<?php echo $data['p_name']; ?></h5>
+									<h6><?php echo $data['p_id']; ?></h6>
+									<b>Address: <?php echo $data['p_addr']; ?></b><br>
+									<b>Rent: <?php echo $data['p_rent']; ?>
+										<p class="card-text">Type: <?php echo $data['p_bhk']; ?><br>Furnished: <?php echo $data['p_furnish']; ?></p>
 									</b>
 									<a href="../Owner/update.php?id=<?php echo $data['p_id']; ?>"><button class="btn mt-3 edit-btn">
 											<img src="../../Img/update.svg" class="img-fluid" height="20px" width="20px"> Update</button></a>
-									<a href="../Owner/delete.php?id=<?php echo $data['p_id']; ?>"><button class="btn mt-3 edit-btn">
+									<a href="../Admin/admin_action.php?pid=<?php echo $data['p_id']; ?>&resp=7"><button class="btn mt-3 edit-btn">
+											<img src="../../Img/trash.svg" class="img-fluid" height="20px" width="20px"> Delete</button></a>
+									<a href="../Owner/owner_prop_detail.php?pid=<?php echo $data["p_id"] ?>"><button class=" btn mt-3 edit-btn">
+											<img src="../../Img/Admin-Home/details.svg" height="20" width="30">Details</button></a>
+								</div>
+							</div>
+						</div>
+					<?php
+					} else { ?>
+						<div class="col-sm-4">
+							<div class="card">
+								<div class="card-body">
+									<h5 class="card-title">
+										<?php echo $data['p_name']; ?></h5>
+									<h6><?php echo $data['p_id']; ?></h6>
+									<b>Address: <?php echo $data['p_addr']; ?></b><br>
+									<b>Rent: <?php echo $data['p_rent']; ?>
+										<p class="card-text">Type: <?php echo $data['p_bhk']; ?><br>Furnished: <?php echo $data['p_furnish']; ?><br>Address: <?php echo $data['p_addr']; ?></p>
+									</b>
+									<h6 style="color: peru;">
+										PROPERTY RENTED...
+									</h6>
+									<a href="../Owner/update.php?id=<?php echo $data['p_id']; ?>"><button class="btn mt-3 edit-btn">
+											<img src="../../Img/update.svg" class="img-fluid" height="20px" width="20px"> Update</button></a>
+									<a href="../Admin/admin_action.php?pid=<?php echo $data['p_id']; ?>&resp=7"><button class="btn mt-3 edit-btn">
 											<img src="../../Img/trash.svg" class="img-fluid" height="20px" width="20px"> Delete</button></a>
 									<a href="../Owner/owner_prop_detail.php?pid=<?php echo $data["p_id"] ?>"><button class=" btn mt-3 edit-btn">
 											<img src="../../Img/Admin-Home/details.svg" height="20" width="30">Details</button></a>
@@ -83,7 +110,8 @@ if (!empty($_SESSION["oname"])) { ?>
 						</div>
 				<?php
 					}
-				} ?>
+				}
+				?>
 			</div>
 		</div>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

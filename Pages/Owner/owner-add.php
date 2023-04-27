@@ -4,6 +4,19 @@ if (!empty($_SESSION["oname"])) {
     $db = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
 
     if (isset($_POST['submit']) && !empty($_POST['submit'])) {
+        $qry = pg_query($db, "select * from property");
+        while ($data = pg_fetch_array($qry)) {
+            if ($data['p_id'] == $_POST['pid'] && $data['p_name'] == $_POST['name'] && $data["p_addr"] == $_POST["address"] && $data["p_city"] == $_POST["city"] && $data["p_bhk"] == $_POST['room_type'] && $data["p_age"] == $_POST["age"] && $data["p_gender"] == $_POST["gender_pref"] && $data["p_type"] == $_POST["prop_type"] && $data["p_rent"] == $_POST["rent"] && $data["p_furnish"] == $_POST["furn"] && $data["p_about"] == $_POST["about"] && $data["p_rules"] == $_POST["rules"] && $data["p_deposit"] == $_POST["deposit"]) {
+                echo "<script>alert('User already exists');
+                window.location.href='../Tenant/login.php';</script>";
+                exit();
+            }
+            if ($_POST['pid'] == $data['p_id']) {
+                echo "<script>alert('Property ID already in use. Please try with another ID');
+                window.location.href='../Tenant/Register.php';</script>";
+            }
+        }
+
 
         $img_array = array();
         foreach ($_FILES['photo']['name'] as $key => $val) {
@@ -18,7 +31,7 @@ if (!empty($_SESSION["oname"])) {
         }
         $img_array = implode(",", $img_array);
 
-        $ret = pg_query($db, "INSERT INTO property VALUES('$_POST[pid]', '$_POST[name]', '$_POST[addr]','$_POST[city]', '$_POST[room_type]', '$_POST[age]', '$_POST[gender_pref]', '$_POST[prop_type]','$_POST[rent]','$_POST[furn]','$_POST[about]','{$_SESSION['oname']}','pending','$_POST[rules]','$img_array')");
+        $ret = pg_query($db, "INSERT INTO property VALUES('$_POST[pid]', '$_POST[name]', '$_POST[address]','$_POST[city]', '$_POST[room_type]', '$_POST[age]', '$_POST[gender_pref]', '$_POST[prop_type]','$_POST[rent]','$_POST[furn]','$_POST[about]','{$_SESSION['oname']}','pending','$_POST[rules]','$img_array','$_POST[deposit]',now())");
         if (!$ret) {
             echo pg_last_error($db);
         } else {
@@ -159,6 +172,10 @@ if (!empty($_SESSION["oname"])) {
                                 <td><input class="upl" type="file" name="photo[]" accept="image/*" multiple value="upload" required /></td>
                             </tr>
                             <tr>
+                                <th>Property Address </th>
+                                <td><input class="txt" type="text" name="address" required /></td>
+                            </tr>
+                            <tr>
                                 <th style="line-height: 2rem;">City </th>
                                 <td>
                                     <select class="txt" name="city">
@@ -207,6 +224,10 @@ if (!empty($_SESSION["oname"])) {
                                         <option>Flat</option>
                                     </select>
                                 </td>
+                            </tr>
+                            <tr>
+                                <th>Deposit Amount</th>
+                                <td><input class="txt" type="text" name="deposit"></td>
                             </tr>
                             <tr>
                                 <th>Rent Per Month</th>

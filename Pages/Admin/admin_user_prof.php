@@ -81,15 +81,15 @@ if (!empty($_SESSION["aname"])) {
                         <?php if ($data['status'] == 'pending') {
                             if ($_GET['role'] == 'owner') { ?>
                                 <div class="mt-5 text-center">
-                                    <a href="../Admin/admin_add_prop.php?name=<?php echo $data["username"] ?>&resp=0"><button class="btn btn-success"><img src="../../Img/Admin-Home/accept.svg" height="20" width="25">Accept</button></a>
-                                    <a href="../Admin/admin_add_prop.php?name=<?php echo $data["username"] ?>&resp=1"><button class=" btn btn-danger"><img src="../../Img/Admin-Home/reject.svg" height="26" width="26">Reject</button></a>
+                                    <a href="../Admin/admin_action.php?name=<?php echo $data["username"] ?>&resp=0"><button class="btn btn-success"><img src="../../Img/Admin-Home/accept.svg" height="20" width="25">Accept</button></a>
+                                    <a href="../Admin/admin_action.php?name=<?php echo $data["username"] ?>&resp=1"><button class=" btn btn-danger"><img src="../../Img/Admin-Home/reject.svg" height="26" width="26">Reject</button></a>
                                     <a href="../Admin/admin_home.php"><button class=" btn btn-primary"><img src="../../Img/Admin-Home/details.svg" height="22" width="30">Back</button></a>
                                 </div>
                             <?php
                             } else { ?>
                                 <div class="mt-5 text-center">
-                                    <a href="../Admin/admin_add_prop.php?name=<?php echo $data["username"] ?>&resp=3"><button class="btn btn-success"><img src="../../Img/Admin-Home/accept.svg" height="20" width="25">Accept</button></a>
-                                    <a href="../Admin/admin_add_prop.php?name=<?php echo $data["username"] ?>&resp=4"><button class=" btn btn-danger"><img src="../../Img/Admin-Home/reject.svg" height="26" width="26">Reject</button></a>
+                                    <a href="../Admin/admin_action.php?name=<?php echo $data["username"] ?>&resp=3"><button class="btn btn-success"><img src="../../Img/Admin-Home/accept.svg" height="20" width="25">Accept</button></a>
+                                    <a href="../Admin/admin_action.php?name=<?php echo $data[" username"] ?>&resp=4"><button class=" btn btn-danger"><img src="../../Img/Admin-Home/reject.svg" height="26" width="26">Reject</button></a>
                                     <a href="../Admin/admin_home.php"><button class=" btn btn-primary"><img src="../../Img/Admin-Home/details.svg" height="22" width="30">Back</button></a>
                                 </div>
                         <?php

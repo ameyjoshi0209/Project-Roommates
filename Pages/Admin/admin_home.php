@@ -17,6 +17,7 @@ if (!empty($_SESSION["aname"])) { ?>
                     <a id="owner-btn" class="nav-item nav-link" type="button" href="../Admin/admin_property.php">Manage Property</a>
                 </div>
             </div>
+            <a href="../Admin/dash.php"><button class="btn btn-warning">info</button></a>
             <div class="align">
                 <div class="btn-group dropstart">
                     <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="box-shadow: none;">
@@ -48,7 +49,7 @@ if (!empty($_SESSION["aname"])) { ?>
                                 <h6><i>Username:<?php echo $data['username']; ?></i></h6>
                                 Email: <?php echo $data['email']; ?>
                                 <p class="card-text">Mob. No.: <?php echo $data['ph_no']; ?><br>Gender: <?php echo $data['gender']; ?><br>DOB: <?php echo $data['dob']; ?></p>
-                                <a href="update_owner.php?id=<?php echo $data['login_id']; ?>"><button class="btn mt-3 edit-btn">
+                                <a href="update_owner.php?name=<?php echo $data['username']; ?>"><button class="btn mt-3 edit-btn">
                                         <img src="../../Img/update.svg" class="img-fluid" height="20px" width="20px"> Update</button></a>
                                 <a href="admin_action.php?name=<?php echo $data['username']; ?>&resp=9"><button class="btn mt-3 edit-btn">
                                         <img src="../../Img/trash.svg" class="img-fluid" height="20px" width="20px"> Delete</button></a>
@@ -78,7 +79,7 @@ if (!empty($_SESSION["aname"])) { ?>
                                 <h6><i>Username:<?php echo $data['username']; ?></i></h6>
                                 Email: <?php echo $data['email']; ?>
                                 <p class="card-text">Mob. No.: <?php echo $data['ph_no']; ?><br>Gender: <?php echo $data['gender']; ?><br>DOB: <?php echo $data['dob']; ?></p>
-                                <a href="update_tenant.php?id=<?php echo $data['login_id']; ?>"><button class="btn mt-3 edit-btn">
+                                <a href="update_tenant.php?name=<?php echo $data['username']; ?>"><button class="btn mt-3 edit-btn">
                                         <img src="../../Img/update.svg" class="img-fluid" height="20px" width="20px"> Update</button></a>
                                 <a href="admin_action.php?name=<?php echo $data['username']; ?>&resp=10"><button class="btn mt-3 edit-btn">
                                         <img src="../../Img/trash.svg" class="img-fluid" height="20px" width="20px"> Delete</button></a>

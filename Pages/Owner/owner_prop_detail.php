@@ -1,6 +1,12 @@
 <?php session_start();
 if (!empty($_SESSION["oname"])) {
     $conn = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
+
+    $prop_id = $_GET["pid"];
+    $records = pg_query($conn, "select * from property where p_id='$prop_id'");
+    $data = pg_fetch_assoc($records);
+    $imgs = explode(",", $data['images']);
+    $img_count = count($imgs);
 ?>
 
     <html>
@@ -23,6 +29,16 @@ if (!empty($_SESSION["oname"])) {
                 max-width: 700px;
             }
 
+            .carousel-indicators [data-bs-target] {
+                background: saddlebrown;
+                position: relative;
+                top: 36px;
+                width: 11px;
+                height: 11px;
+                border: none;
+                border-radius: 100%;
+            }
+
             .prop {
                 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                 font-size: medium;
@@ -37,6 +53,9 @@ if (!empty($_SESSION["oname"])) {
 
             h1 {
                 font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                display: flex;
+                justify-content: center;
+                font-size: 80px;
             }
 
             .act-btn {
@@ -51,21 +70,26 @@ if (!empty($_SESSION["oname"])) {
         </style>
     </head>
 
-    <?php
-    $prop_id = $_GET["pid"];
-    $records = pg_query($conn, "select * from property where p_id='$prop_id'");
-    $data = pg_fetch_assoc($records);
-    ?>
-
-
     <body style="background-color: rgb(210, 241, 241);">
         <div class="container">
             <div class="row" style="display: flex; justify-content: center;">
-                <h1 class="d-flex justify-content-center" style="font-size: 90px;"><?php echo $data['p_name']; ?></h1>
-                <div id="carouselExampleControls" class="carousel slide w-100" data-bs-ride="carousel" style="display: flex;justify-content: center;padding: 0;margin-top: 40px;">
+                <h1><?php echo $data['p_name']; ?></h1>
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true" style="display: flex;justify-content: center;padding: 0;margin-top: 40px;">
+                    <div class="carousel-indicators">
+                        <?php
+                        if ($img_count == 1) { ?>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <?php
+                        } elseif ($img_count > 1) { ?>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <?php for ($i = 1; $i < $img_count; $i++) { ?>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="<?php echo $i; ?>"></button>
+                        <?php
+                            }
+                        } ?>
+                    </div>
                     <div class="carousel-inner">
                         <?php
-                        $imgs = explode(",", $data['images']);
                         foreach ($imgs as $value => $key) {
                             if ($value == 0) { ?>
                                 <div class="carousel-item active">
@@ -82,14 +106,6 @@ if (!empty($_SESSION["oname"])) {
                         }
                         ?>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
                 </div>
             </div>
             <br><br>
@@ -103,6 +119,10 @@ if (!empty($_SESSION["oname"])) {
                     <tr>
                         <th>Property Type</th>
                         <td><?php echo $data['p_type']; ?></td>
+                    </tr>
+                    <tr>
+                        <th>Deposit Amount</th>
+                        <td><?php echo $data['p_deposit']; ?></td>
                     </tr>
                     <tr>
                         <th>Rent per month</th>
@@ -139,14 +159,6 @@ if (!empty($_SESSION["oname"])) {
                 </div>
             </div>
         </div>
-        <?php if ($data['status'] == 'pending') { ?>
-            <div class="text-center">
-                <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=6"><button class="btn btn-success act-btn"><img src="../../Img/Admin-Home/accept.svg" height="24" width="26">Accept</button></a>
-                <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=7"><button class="btn btn-danger act-btn"><img src="../../Img/Admin-Home/reject.svg" height="24" width="26">Reject</button></a>
-                <a href="../Admin/admin_property.php"><button class="btn btn-primary act-btn"><img src="../../Img/Admin-Home/back.svg" height="22" width="30">Back</button></a>
-            </div>
-        <?php
-        } ?>
     </body>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>

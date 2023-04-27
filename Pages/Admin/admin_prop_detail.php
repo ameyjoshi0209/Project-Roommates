@@ -1,6 +1,12 @@
 <?php session_start();
 if (!empty($_SESSION["aname"])) {
     $conn = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
+
+    $prop_id = $_GET["pid"];
+    $records = pg_query($conn, "select * from property where p_id='$prop_id'");
+    $data = pg_fetch_assoc($records);
+    $imgs = explode(",", $data['images']);
+    $img_count = count($imgs);
 ?>
 
     <html>
@@ -39,14 +45,17 @@ if (!empty($_SESSION["aname"])) {
             }
 
             table {
-                padding-left: 50px;
-                line-height: 30px;
-
+                font-size: 19px;
+                margin-left: 25px;
+                line-height: 40px;
                 width: 100%;
             }
 
             h1 {
                 font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                display: flex;
+                justify-content: center;
+                font-size: 80px;
             }
 
             .act-btn {
@@ -62,18 +71,10 @@ if (!empty($_SESSION["aname"])) {
         </style>
     </head>
 
-    <?php
-    $prop_id = $_GET["pid"];
-    $records = pg_query($conn, "select * from property where p_id='$prop_id'");
-    $data = pg_fetch_assoc($records);
-    $imgs = explode(",", $data['images']);
-    $img_count = count($imgs);
-    ?>
-
     <body style="background-color: rgb(210, 241, 241);">
         <div class="container">
             <div class="row">
-                <h1 style="padding-left: 40%;"><?php echo $data['p_name']; ?></h1>
+                <h1><?php echo $data['p_name']; ?></h1>
                 <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true" style="display: flex;justify-content: center;padding: 0;margin-top: 40px;">
                     <div class="carousel-indicators">
                         <?php
@@ -109,8 +110,8 @@ if (!empty($_SESSION["aname"])) {
                 </div>
             </div>
             <br><br>
-            <div class="row">
-                <h2>Property Details</h2>
+            <div class="row d-flex justify-content-center">
+                <h2 class="mt-4 mb-5">Property Details</h2>
                 <table>
                     <tr>
                         <th>Property name</th>
@@ -121,12 +122,20 @@ if (!empty($_SESSION["aname"])) {
                         <td><?php echo $data['p_type']; ?></td>
                     </tr>
                     <tr>
+                        <th>Deposit Amount</th>
+                        <td><?php echo $data['p_deposit']; ?></td>
+                    </tr>
+                    <tr>
                         <th>Rent per month</th>
                         <td><?php echo $data['p_rent']; ?></td>
                     </tr>
                     <tr>
                         <th>BHK Type</th>
                         <td><?php echo $data['p_bhk']; ?></td>
+                    </tr>
+                    <tr>
+                        <th>City</th>
+                        <td><?php echo $data['p_city']; ?></td>
                     </tr>
                     <tr>
                         <th>Address</th>
@@ -145,7 +154,7 @@ if (!empty($_SESSION["aname"])) {
                         <td><?php echo $data['p_gender']; ?></td>
                     </tr>
                 </table>
-                <div class="prop">
+                <div class="prop mt-4 mb-3">
                     <h2>About this Property</h2>
                     <p><?php echo $data['p_about']; ?></p>
                 </div>
@@ -158,8 +167,8 @@ if (!empty($_SESSION["aname"])) {
         <?php if ($data['status'] == 'pending') { ?>
             <div class="text-center">
                 <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=6"><button class="btn btn-success act-btn"><img src="../../Img/Admin-Home/accept.svg" height="24" width="26">Accept</button></a>
-                <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=7"><button class="btn btn-danger act-btn"><img src="../../Img/Admin-Home/reject.svg" height="24" width="26">Reject</button></a>
-                <a href="../Admin/admin_property.php"><button class="btn btn-primary act-btn"><img src="../../Img/Admin-Home/back.svg" height="22" width="30">Back</button></a>
+                <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=7"><button class="btn btn-danger act-btn"><img src="../../Img/Admin-Home/reject.svg" height="26" width="32">Reject</button></a>
+                <a href="../Admin/admin_property.php"><button class="btn btn-primary act-btn"><img src="../../Img/Admin-Home/back.svg" height="22" width="34">Back</button></a>
             </div>
         <?php
         } ?>

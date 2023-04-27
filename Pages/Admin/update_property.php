@@ -5,7 +5,22 @@ if (!empty($_SESSION["aname"])) {
     $result = pg_query($conn, "SELECT * FROM property WHERE p_id='$prop_id'") or die("Query Failed");
     $data = pg_fetch_assoc($result);
     if (isset($_POST['submit']) && !empty($_POST['submit'])) {
-        $result = pg_query($conn, "UPDATE property SET p_name = '$_POST[name]',p_addr='$_POST[addr]',p_bhk='$_POST[room_type]',p_age='$_POST[age]',p_ph_no='$_POST[phone]',p_email='$_POST[email]',p_rent='$_POST[rent]',p_furnish='$_POST[furn]',p_about='$_POST[about]'
+
+        if ($_FILES["photo"]["error"] != 4) {
+            $img_array = array();
+            foreach ($_FILES['photo']['name'] as $key => $val) {
+                $target_file = $_POST['name'] . '-' . $key . '.jpg';
+                array_push($img_array, $target_file);
+                if (!file_exists('../../Uploaded_Images/Property/' . $prop_id)) {
+                    mkdir('../../Uploaded_Images/Property/' . $prop_id, 0777, true);
+                    move_uploaded_file($_FILES['photo']['tmp_name'][$key], '../../Uploaded_Images/Property/' . $prop_id . '/' . $target_file);
+                } else {
+                    move_uploaded_file($_FILES['photo']['tmp_name'][$key], '../../Uploaded_Images/Property/' . $prop_id . '/' . $target_file);
+                }
+            }
+            $img_array = implode(",", $img_array);
+        }
+        $result = pg_query($conn, "UPDATE property SET p_name = '$_POST[name]',p_addr='$_POST[addr]',p_bhk='$_POST[room_type]',p_age='$_POST[age]',p_ph_no='$_POST[phone]',p_email='$_POST[email]',p_rent='$_POST[rent]',p_furnish='$_POST[furn]',p_about='$_POST[about],p_deposit=$_POST[deposit]',images=$img_array
 where p_id='$prop_id'");
         if (!$result) {
             echo "<script>alert('Update unsuccessfull')</script>";
@@ -18,7 +33,7 @@ where p_id='$prop_id'");
     <html>
 
     <head>
-        <title>Bootstrap</title>
+        <title>Adimn Direct Property Update</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -118,7 +133,7 @@ where p_id='$prop_id'");
 
     <body>
         <div class="container" style="margin-top: 3em;">
-            <form name=update1 method="post">
+            <form name=update1 method="post" enctype="multipart/form-data">
                 <div class="row" style="display: flex;justify-content: center;">
                     <div class="col-sm-4">
                         <table style="display: flex;justify-content: center;">
@@ -132,6 +147,10 @@ where p_id='$prop_id'");
                             <tr>
                                 <th>Property Name </th>
                                 <td><input class="txt" type="text" name="name" value="<?php echo $data['p_name']; ?>"></td>
+                            </tr>
+                            <tr>
+                                <th>Property Images </th>
+                                <td><input class="upl" type="file" name="photo[]" accept="image/*" multiple value="upload" required /></td>
                             </tr>
                             <tr>
                                 <th>Property Address</th>
@@ -170,11 +189,6 @@ where p_id='$prop_id'");
                                 <th>Property Age (in years)</th>
                                 <td><input class="txt" type="text" name="age" value="<?php echo $data['p_age']; ?>"></td>
                             </tr>
-                            <!--<tr>
-                                <th>Upload Images </th>
-                                <td><input class="txt" type="file" name="photo" multiple="multiple" accept="image/*">
-                                </td>
-                            <tr>-->
                             <th>Tenant Preference</th>
                             <td>
                                 <select class="txt" name="gender_pref">
@@ -194,6 +208,10 @@ where p_id='$prop_id'");
                                         <option>Flat</option>
                                     </select>
                                 </td>
+                            </tr>
+                            <tr>
+                                <th>Deposit Amount</th>
+                                <td><input class="txt" type="text" name="deposit" value="<?php echo $data['p_deposit']; ?>"></td>
                             </tr>
                             <tr>
                                 <th>Rent Per Month</th>
@@ -223,7 +241,6 @@ where p_id='$prop_id'");
                             </tr>
                         </table>
                         <br>
-
                         <input type=submit name=submit value=update class="ab">
                     </div>
                 </div>

@@ -1,6 +1,12 @@
 <?php session_start();
 if (!empty($_SESSION["uname"])) {
     $conn = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
+
+    $prop_id = $_GET["pid"];
+    $records = pg_query($conn, "select * from property where p_id='$prop_id'");
+    $data = pg_fetch_assoc($records);
+    $imgs = explode(",", $data['images']);
+    $img_count = count($imgs);
 ?>
 
     <html>
@@ -9,7 +15,7 @@ if (!empty($_SESSION["uname"])) {
         <title>Property Detail Page</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
         <style>
             #myCarousel {
                 border: 3px black solid;
@@ -19,9 +25,18 @@ if (!empty($_SESSION["uname"])) {
             }
 
             .carousel-inner {
-
                 height: 490px;
                 max-width: 700px;
+            }
+
+            .carousel-indicators [data-bs-target] {
+                background: saddlebrown;
+                position: relative;
+                top: 36px;
+                width: 11px;
+                height: 11px;
+                border: none;
+                border-radius: 100%;
             }
 
             .prop {
@@ -30,79 +45,101 @@ if (!empty($_SESSION["uname"])) {
             }
 
             table {
-                padding-left: 50px;
-                line-height: 30px;
-
+                font-size: 19px;
+                margin-left: 25px;
+                line-height: 40px;
                 width: 100%;
             }
 
             h1 {
                 font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                display: flex;
+                justify-content: center;
+                font-size: 80px;
+            }
+
+            #pay:focus,
+            #pay:active {
+                outline: none !important;
+                box-shadow: none;
+            }
+
+            #pay {
+                box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+                font-size: 17px;
+                padding: 10px 25px;
+                border-radius: 12px;
+                position: relative;
+                left: 45%;
+                margin-top: 40px;
+                margin-bottom: 30px;
+                transition: all 0.3s ease-in-out !important;
+            }
+
+            #pay:hover {
+                background-color: green;
+            }
+
+            #pay:active {
+                border: none;
+                transform: scale(0.85);
             }
         </style>
     </head>
 
-    <?php
-    $prop_id = $_GET["pid"];
-    $records = pg_query($conn, "select * from property where p_id='$prop_id'");
-    $data = pg_fetch_assoc($records);
-    ?>
-
-
     <body style="background-color: rgb(210, 241, 241);">
         <div class="container">
             <div class="row">
-                <h1 style="padding-left: 40%;"><?php echo $data['p_name']; ?></h1>
-                <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner">
-                        <div class="item active">
-                            <img src="../Img/hm.webp" style="width:700px; height: 500px;">
-                            <div class="carousel-caption" style="padding: 5px;">
-                                <br>
-                                <h3>Ousides</h3>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="../Img/hall.webp">
-                            <div class="carousel-caption" style="padding: 5px;">
-                                <br>
-                                <h3>Hall</h3>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="../Img/Bath.webp">
-                            <div class="carousel-caption" style="padding: 5px;">
-                                <br>
-                                <h3>Bathroom</h3>
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="../Img/kitchen.webp">
-                            <div class="carousel-caption" style="padding: 5px;">
-                                <br>
-                                <h3>kitchen</h3>
-                            </div>
-                        </div>
+                <h1><?php echo $data['p_name']; ?></h1>
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true" style="display: flex;justify-content: center;padding: 0;margin-top: 40px;">
+                    <div class="carousel-indicators">
+                        <?php
+                        if ($img_count == 1) { ?>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <?php
+                        } elseif ($img_count > 1) { ?>
+                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <?php for ($i = 1; $i < $img_count; $i++) { ?>
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="<?php echo $i; ?>"></button>
+                        <?php
+                            }
+                        } ?>
                     </div>
-                    <!-- Left and right controls -->
-                    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="right carousel-control" href="#myCarousel" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
+                    <div class="carousel-inner">
+                        <?php
+                        foreach ($imgs as $value => $key) {
+                            if ($value == 0) { ?>
+                                <div class="carousel-item active">
+                                    <img src="../../Uploaded_Images/Property/<?php echo $data['p_id']; ?>/<?php echo $key; ?>" height="484.79px" width="694.91px">
+                                </div>
+                            <?php
+                            } else {
+                            ?>
+                                <div class="carousel-item">
+                                    <img src="../../Uploaded_Images/Property/<?php echo $data['p_id']; ?>/<?php echo $key; ?>" height="484.79px" width="694.91px">
+                                </div>
+                        <?php
+                            }
+                        }
+                        ?>
+                    </div>
                 </div>
             </div>
-            <hr>
-            <div class="row">
-                <h2>Property Details</h2>
+            <br><br>
+            <div class="row d-flex justify-content-center">
+                <h2 class="mt-4 mb-5">Property Details</h2>
                 <table>
                     <tr>
                         <th>Property name</th>
                         <td><?php echo $data['p_name']; ?></td>
+                    </tr>
+                    <tr>
+                        <th>Property Type</th>
+                        <td><?php echo $data['p_type']; ?></td>
+                    </tr>
+                    <tr>
+                        <th>Deposit Amount</th>
+                        <td><?php echo $data['p_deposit']; ?></td>
                     </tr>
                     <tr>
                         <th>Rent per month</th>
@@ -111,6 +148,10 @@ if (!empty($_SESSION["uname"])) {
                     <tr>
                         <th>BHK Type</th>
                         <td><?php echo $data['p_bhk']; ?></td>
+                    </tr>
+                    <tr>
+                        <th>City</th>
+                        <td><?php echo $data['p_city']; ?></td>
                     </tr>
                     <tr>
                         <th>Address</th>
@@ -125,19 +166,41 @@ if (!empty($_SESSION["uname"])) {
                         <td><?php echo $data['p_age']; ?></td>
                     </tr>
                     <tr>
-                        <th>Contact</th>
-                        <td><?php echo $data['p_ph_no']; ?></td>
+                        <th>Prefered Tenant</th>
+                        <td><?php echo $data['p_gender']; ?></td>
                     </tr>
                 </table>
-                <div class="prop">
+                <div class="prop mt-4 mb-3">
                     <h2>About this Property</h2>
                     <p><?php echo $data['p_about']; ?></p>
                 </div>
+                <div class="prop">
+                    <h2>Rules regarding this Property</h2>
+                    <p><?php echo $data['p_rules']; ?></p>
+                </div>
+                <div class="prop">
+                    <h2>Contact Details of Owner of Property</h2>
+                    <h6><i>Owner Name: <?php
+                                        $nm = pg_query($conn, "select name from owner_login where username in (select username from property where p_id='$prop_id');");
+                                        $nm = pg_fetch_row($nm);
+                                        echo $nm[0] ?></i></h6>
+                    <p style="font-size:18px;">
+                        <?php $qry = pg_query($conn, "select ph_no from owner_login where username in (select username from property where p_id='$prop_id');");
+                        $cont = pg_fetch_assoc($qry);
+                        echo $cont['ph_no'] ?>
+                    </p>
+                </div>
+            </div>
+            <div class="container-fluid d-flex" style="justify-content: center;">
+                <button id="pay" class="btn btn-success">
+                    <img style="margin-bottom: 2px;margin-right: 3px;" src="../../Img/pay.svg">
+                    Pay Deposit
+                </button>
             </div>
         </div>
     </body>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 
     </html>
 <?php

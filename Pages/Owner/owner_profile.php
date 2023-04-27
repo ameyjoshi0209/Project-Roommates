@@ -3,9 +3,11 @@
 if (!empty($_SESSION["oname"])) {
     $dbconn = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
     if (isset($_POST['submit']) && !empty($_POST['submit'])) {
-        if ($_FILES["own_prof"]["error"] != 4) {
+        if (is_uploaded_file($_FILES['own_prof']['tmp_name'])) {
             $target_file = $_SESSION["oname"] . '.jpg';
             move_uploaded_file($_FILES['own_prof']['tmp_name'], '../../Uploaded_Images/User/Owner/Temp/' . $target_file);
+        } else {
+            copy("../../Uploaded_Images/User/default.jpg", "../../Uploaded_Images/User/Owner/Temp/$_SESSION[oname].jpg");
         }
         header("Location: ../Admin/admin_action.php?Uname=$_POST[Uname]&Name=$_POST[Name]&dob=$_POST[dob]&phone=$_POST[phone]&gender=$_POST[gender]&resp=11");
     }

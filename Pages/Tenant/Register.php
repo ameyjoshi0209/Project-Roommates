@@ -24,14 +24,23 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
                 window.location.href='../Tenant/login.php';</script>";
             exit();
         }
+        if ($uname == $data['username']) {
+            echo "<script>alert('username already taken. Please try with another username');
+                window.location.href='../Tenant/Register.php';</script>";
+        }
     }
 
-    $target_file = $uname . '.jpg';
-    move_uploaded_file($_FILES['photo']['tmp_name'], '../../Uploaded_Images/User/Tenant/' . $target_file);
+    if (is_uploaded_file($_FILES['photo']['tmp_name'])) {
+        $target_file = $uname . '.jpg';
+        move_uploaded_file($_FILES['photo']['tmp_name'], '../../Uploaded_Images/User/Tenant/' . $target_file);
+    } else {
+        $target_file = $uname . '.jpg';
+        copy("../../Uploaded_Images/User/default.jpg", "../../Uploaded_Images/User/Tenant/$target_file");
+    }
 
     $sql = "insert into logindata(name, gender, dob, ph_no, email, username, password, status, image) values('$name','$gender','$dob', $phone, '$email', '$uname','$pass','pending','$target_file')";
     $ret = pg_query($db, $sql);
-    echo "<script>alert('Records added successfully');
+    echo "<script>alert('Account sent for verfication');
                 window.location.href='../Tenant/login.php';</script>";
     pg_close();
 }
@@ -124,6 +133,17 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
             height: 28px;
             width: 19em;
         }
+
+        .photo::-webkit-file-upload-button {
+            font-weight: bold;
+            margin-bottom: 5px;
+            margin-left: 20px;
+            color: dodgerblue;
+            padding: 0.5em;
+            border: thin solid grey;
+            border-radius: 30px;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -157,7 +177,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
                             <td><input class="txt" type="date" name="date" required></td>
                         <tr>
                             <th>Phone Number</th>
-                            <td><input class="txt" type="tel" name="phone" required></td>
+                            <td><input class="txt" type="tel" name="phone" pattern="[789][0-9]{9}" required></td>
                         </tr>
                         <tr>
                             <th>Email</th>
