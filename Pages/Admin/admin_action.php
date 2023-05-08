@@ -76,9 +76,20 @@ switch ($resp) {
 
         $rej2 = pg_query($db, "delete from property where p_id='$pid'");
         if ($rej2) {
+            $files = glob("../../Uploaded_Images/Property/$pid/*"); // get all file names
+            foreach ($files as $file) { // iterate files
+                if (is_file($file)) {
+                    unlink($file); // delete file
+                }
+            }
             rmdir("../../Uploaded_Images/Property/$pid");
-            echo "<script>alert('Property verification Rejected');
+            if ($_GET['role'] == 'admin') {
+                echo "<script>alert('Property Deleted');
                 window.location.href='../Admin/admin_property.php';</script>"; // redirects to all records page
+            } else {
+                echo "<script>alert('Property Deleted');
+                window.location.href='../Owner/owner.php';</script>";
+            }
             exit();
         }
         break;
@@ -262,5 +273,16 @@ switch ($resp) {
 
         $pid = $_GET["pid"];
         header("Location: ../Admin/admin_prop_upd.php?pid=$pid");
+        break;
+    case 23:
+        // CHANGE RENTED STATUS BY CLICKING PAY BUTTON
+
+        $tname = $_GET['tname'];
+        $upd_stat = pg_query($db, "update property set t_name='$tname' where p_id='$pid'");
+        if ($upd_stat) {
+            echo "<script>alert('Property rented successfully');
+                window.location.href='../Tenant/tenant_rented_prop.php';</script>"; // redirects to all records page
+            exit();
+        }
         break;
 }

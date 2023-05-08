@@ -39,17 +39,18 @@
 
    <body>
      <nav class="navbar navbar-expand-lg navbar-dark bg-dark pt-1 pb-1">
-       <a class="navbar-brand text-primary" href="../Admin/admin_home.php" style="margin-left: 20px;">ROOMMATES</a>
+       <a class="navbar-brand text-primary" href="../Tenant/home.php" style="margin-left: 20px;">ROOMMATES</a>
        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
        </div>
        <div class="align">
          <div class="btn-group dropstart">
            <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="top: 6px;right: 5px;border: none;">
-             <img src="<?php echo $_SESSION["uimage"]; ?>" class="rounded-circle">
+             <img src="<?php echo $_SESSION["uimage"]; ?>" class="rounded-circle-1">
            </button>
            <ul class="dropdown-menu">
              <h6 class="dropdown-header"><?php echo $_SESSION["uname"] ?></h6>
              <li><a class="dropdown-item" href="../Tenant/tenant_profile.php"><img src="../../Img/Admin-Home/profile.svg" height="20" width="25" style="margin-right: 4px;"> My Profile</a></li>
+             <li><a class="dropdown-item" href="../Tenant/tenant_rented_prop.php"><img src="../../Img/Admin-Home/houses.svg" height="20" width="25" style="margin-right: 4px;"> My Property</a></li>
              <li><a class="dropdown-item" href="../Tenant/tenant_logout.php"><img src="../../Img/Admin-Home/logout.svg" height="18" width="22" style="margin-right: 8px;"> Logout</a></li>
            </ul>
          </div>
@@ -104,7 +105,7 @@
 
          <div class=col-sm-2>
            <button class="btn btn-primary fil" type="button" name=drop onclick="getdata()" style="color:black;">
-             filter
+             Filter
            </button>
          </div>
        </div>
@@ -124,22 +125,24 @@
            <?php
             if (pg_num_rows($result) > 0) {
               while ($row = pg_fetch_assoc($result)) {
+                if (empty($row['t_name'])) {
             ?>
-               <div class="col-sm-4" style="padding:1rem;justify-content:center;">
-                 <div class="card" style="opacity: 0.5;background-color: black;height: 13.8em; color: black;">
-                   <div class="card-body">
-                     <h5 class="card-title">
-                       <?php echo $row['p_name']; ?></h5>
-                     <b>Rent:<?php echo $row['p_rent']; ?>
-                       <p class="card-text">Type:<?php echo $row['p_bhk']; ?><br>Furnished:<?php echo $row['p_furnish']; ?></p>
-                     </b>
-                     <a href="../Tenant/detail.php?pid=<?php echo $row['p_id']; ?>">
-                       <button name="detail" class="mt-3 btn btn-success">View</button>
-                     </a>
+                 <div class="col-sm-4" style="padding:1rem;justify-content:center;">
+                   <div class="card">
+                     <div class="card-body">
+                       <h5 class="card-title">
+                         <?php echo $row['p_name']; ?></h5>
+                       <b>Rent:<?php echo $row['p_rent']; ?>
+                         <p class="card-text">Type:<?php echo $row['p_bhk']; ?><br>Furnished:<?php echo $row['p_furnish']; ?></p>
+                       </b>
+                       <a href="../Tenant/detail.php?pid=<?php echo $row['p_id']; ?>">
+                         <button name="detail" class="mt-4 btn view">View</button>
+                       </a>
+                     </div>
                    </div>
                  </div>
-               </div>
            <?php
+                }
               }
             } else {
               echo "No Data found";
@@ -148,7 +151,8 @@
          </div>
          <br>
          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
    </body>
 

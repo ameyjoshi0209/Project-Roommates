@@ -43,7 +43,9 @@ if (!empty($_SESSION["aname"])) { ?>
                         <div class="card" id="usr-card">
                             <div class="card-body">
                                 <h5 class="card-title">
-                                    <?php echo $data['p_name']; ?></h5>
+                                    <?php echo $data['p_name']; ?><i style="font-size: 14px;color: peru;"> <?php if (!empty($data['t_name'])) {
+                                                                                                                echo "(RENTED BY $data[t_name])";
+                                                                                                            } ?></i></h5>
                                 <h6><i>Owner Name: <?php
                                                     $nm = pg_query($dbconn, "select name from owner_login where username in (select username from property where p_id='$data[p_id]');");
                                                     $nm = pg_fetch_row($nm);
@@ -52,7 +54,7 @@ if (!empty($_SESSION["aname"])) { ?>
                                 <p class="card-text">Mob. No.: <?php echo $data['p_ph_no']; ?><br>Rent: <?php echo $data['p_rent']; ?><br>City: <?php echo $data['p_city']; ?></p>
                                 <a href="update_property.php?pid=<?php echo $data['p_id']; ?>"><button class="btn mt-3 edit-btn">
                                         <img src="../../Img/update.svg" class="img-fluid" height="20px" width="20px"> Update</button></a>
-                                <a href="admin_action.php?pid=<?php echo $data['p_id']; ?>&resp=7"><button class="btn mt-3 edit-btn">
+                                <a href="admin_action.php?pid=<?php echo $data['p_id']; ?>&resp=7&role=admin"><button class="btn mt-3 edit-btn">
                                         <img src="../../Img/trash.svg" class="img-fluid" height="20px" width="20px"> Delete</button></a>
                                 <a href="../Admin/admin_action.php?pid=<?php echo $data["p_id"] ?>&resp=8"><button class=" btn mt-3 edit-btn">
                                         <img src="../../Img/Admin-Home/details.svg" height="20" width="30">Details</button></a>

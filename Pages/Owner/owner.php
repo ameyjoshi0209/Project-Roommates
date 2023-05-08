@@ -43,14 +43,15 @@ if (!empty($_SESSION["oname"])) { ?>
 		-->
 
 		<div class="container-fluid">
-			<div class="row mt-3 g-3">
+			<h1 class="mt-4 mb-5 d-flex justify-content-center">Uploded Properties</h1>
+			<div class="row mt-3 g-3 mb-4">
 				<?php
 				$dbconn = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
 				$records = pg_query($dbconn, "select * from property where username='{$_SESSION['oname']}'");
 				while ($data = pg_fetch_array($records)) {
 					if ($data['status'] == 'pending') { ?>
 						<div class="col-sm-4">
-							<div class="card" style="opacity: 0.5;background-color: black;height: 13.8em; color: white;">
+							<div class="card">
 								<div class="card-body">
 									<h5 class="card-title">
 										<?php echo $data['p_name']; ?></h5>
@@ -62,53 +63,52 @@ if (!empty($_SESSION["oname"])) { ?>
 								</div>
 							</div>
 						</div>
-					<?php
+						<?php
 					} elseif ($data['status'] == 'accepted') {
-						if ($data['rented_status'] == 'f') ?>
-						<div class="col-sm-4">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title">
-										<?php echo $data['p_name']; ?></h5>
-									<h6><?php echo $data['p_id']; ?></h6>
-									<b>Address: <?php echo $data['p_addr']; ?></b><br>
-									<b>Rent: <?php echo $data['p_rent']; ?>
-										<p class="card-text">Type: <?php echo $data['p_bhk']; ?><br>Furnished: <?php echo $data['p_furnish']; ?></p>
-									</b>
-									<a href="../Owner/update.php?id=<?php echo $data['p_id']; ?>"><button class="btn mt-3 edit-btn">
-											<img src="../../Img/update.svg" class="img-fluid" height="20px" width="20px"> Update</button></a>
-									<a href="../Admin/admin_action.php?pid=<?php echo $data['p_id']; ?>&resp=7"><button class="btn mt-3 edit-btn">
-											<img src="../../Img/trash.svg" class="img-fluid" height="20px" width="20px"> Delete</button></a>
-									<a href="../Owner/owner_prop_detail.php?pid=<?php echo $data["p_id"] ?>"><button class=" btn mt-3 edit-btn">
-											<img src="../../Img/Admin-Home/details.svg" height="20" width="30">Details</button></a>
+						if (empty($data['t_name'])) { ?>
+							<div class="col-sm-4">
+								<div class="card">
+									<div class="card-body">
+										<h5 class="card-title">
+											<?php echo $data['p_name']; ?></h5>
+										<h6><?php echo $data['p_id']; ?></h6>
+										<b>Address: <?php echo $data['p_addr']; ?></b><br>
+										<b>Rent: <?php echo $data['p_rent']; ?>
+											<p class="card-text">Type: <?php echo $data['p_bhk']; ?><br>Furnished: <?php echo $data['p_furnish']; ?></p>
+										</b>
+										<a href="../Owner/update.php?id=<?php echo $data['p_id']; ?>"><button class="btn mt-3 edit-btn">
+												<img src="../../Img/update.svg" class="img-fluid" height="20px" width="20px"> Update</button></a>
+										<a href="../Admin/admin_action.php?pid=<?php echo $data['p_id']; ?>&resp=7"><button class="btn mt-3 edit-btn">
+												<img src="../../Img/trash.svg" class="img-fluid" height="20px" width="20px"> Delete</button></a>
+										<a href="../Owner/owner_prop_detail.php?pid=<?php echo $data["p_id"] ?>"><button class=" btn mt-3 edit-btn">
+												<img src="../../Img/Admin-Home/details.svg" height="20" width="30">Details</button></a>
+									</div>
 								</div>
 							</div>
-						</div>
-					<?php
-					} else { ?>
-						<div class="col-sm-4">
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title">
-										<?php echo $data['p_name']; ?></h5>
-									<h6><?php echo $data['p_id']; ?></h6>
-									<b>Address: <?php echo $data['p_addr']; ?></b><br>
-									<b>Rent: <?php echo $data['p_rent']; ?>
-										<p class="card-text">Type: <?php echo $data['p_bhk']; ?><br>Furnished: <?php echo $data['p_furnish']; ?><br>Address: <?php echo $data['p_addr']; ?></p>
-									</b>
-									<h6 style="color: peru;">
-										PROPERTY RENTED...
-									</h6>
-									<a href="../Owner/update.php?id=<?php echo $data['p_id']; ?>"><button class="btn mt-3 edit-btn">
-											<img src="../../Img/update.svg" class="img-fluid" height="20px" width="20px"> Update</button></a>
-									<a href="../Admin/admin_action.php?pid=<?php echo $data['p_id']; ?>&resp=7"><button class="btn mt-3 edit-btn">
-											<img src="../../Img/trash.svg" class="img-fluid" height="20px" width="20px"> Delete</button></a>
-									<a href="../Owner/owner_prop_detail.php?pid=<?php echo $data["p_id"] ?>"><button class=" btn mt-3 edit-btn">
-											<img src="../../Img/Admin-Home/details.svg" height="20" width="30">Details</button></a>
+						<?php
+						} else { ?>
+							<div class="col-sm-4">
+								<div class="card">
+									<div class="card-body">
+										<h5 class="card-title">
+											<?php echo $data['p_name']; ?><i style="font-size: 14px;color: peru;"> (RENTED)</i>
+										</h5>
+										<h6><?php echo $data['p_id']; ?></h6>
+										<b>Address: <?php echo $data['p_addr']; ?></b><br>
+										<b>Rent: <?php echo $data['p_rent']; ?>
+											<p class="card-text">Type: <?php echo $data['p_bhk']; ?><br>Furnished: <?php echo $data['p_furnish']; ?></p>
+										</b>
+										<a href="../Owner/update.php?id=<?php echo $data['p_id']; ?>"><button class="btn mt-3 edit-btn">
+												<img src="../../Img/update.svg" class="img-fluid" height="20px" width="20px"> Update</button></a>
+										<a href="../Admin/admin_action.php?pid=<?php echo $data['p_id']; ?>&resp=7"><button class="btn mt-3 edit-btn">
+												<img src="../../Img/trash.svg" class="img-fluid" height="20px" width="20px"> Delete</button></a>
+										<a href="../Owner/owner_prop_detail.php?pid=<?php echo $data["p_id"] ?>"><button class=" btn mt-3 edit-btn">
+												<img src="../../Img/Admin-Home/details.svg" height="20" width="30">Details</button></a>
+									</div>
 								</div>
 							</div>
-						</div>
 				<?php
+						}
 					}
 				}
 				?>

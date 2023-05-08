@@ -43,6 +43,7 @@ if (!empty($_SESSION["uname"])) {
                             <ul class="dropdown-menu">
                                 <h6 class="dropdown-header"><?php echo $_SESSION["uname"] ?></h6>
                                 <li><a class="dropdown-item" href="../Tenant/tenant_profile.php"><img src="../../Img/Admin-Home/profile.svg" height="20" width="25" style="margin-right: 4px;"> My Profile</a></li>
+                                <li><a class="dropdown-item" href="../Tenant/tenant_rented_prop.php"><img src="../../Img/Admin-Home/houses.svg" height="20" width="25" style="margin-right: 4px;"> My Property</a></li>
                                 <li><a class="dropdown-item" href="../Tenant/tenant_logout.php"><img src="../../Img/Admin-Home/logout.svg" height="18" width="22" style="margin-right: 8px;"> Logout</a></li>
                             </ul>
                         </div>

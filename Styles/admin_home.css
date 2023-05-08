@@ -4,6 +4,9 @@
     box-sizing: border-box;
 }
 
+body {
+    background-color: lightpink;
+}
 
 #owner-btn:focus #owner-btn:active {
     outline: none !important;
@@ -33,6 +36,7 @@
 }
 
 #usr-card {
+    background-color: oldlace;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     background-clip: border-box;
     border: none;

@@ -70,7 +70,6 @@ if (!empty($_SESSION["uname"])) {
                 padding: 10px 25px;
                 border-radius: 12px;
                 position: relative;
-                left: 45%;
                 margin-top: 40px;
                 margin-bottom: 30px;
                 transition: all 0.3s ease-in-out !important;
@@ -192,10 +191,10 @@ if (!empty($_SESSION["uname"])) {
                 </div>
             </div>
             <div class="container-fluid d-flex" style="justify-content: center;">
-                <button id="pay" class="btn btn-success">
-                    <img style="margin-bottom: 2px;margin-right: 3px;" src="../../Img/pay.svg">
-                    Pay Deposit
-                </button>
+                <a href="../Admin/admin_action.php?tname=<?php echo $_SESSION["uname"]; ?>&pid=<?php echo $data['p_id']; ?>&resp=23"><button id="pay" class="btn btn-success">
+                        <img src="../../Img/pay.svg">
+                        Pay Deposit
+                    </button></a>
             </div>
         </div>
     </body>
