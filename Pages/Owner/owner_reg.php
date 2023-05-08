@@ -11,11 +11,18 @@ $repass = $_POST['repass'];
 
 if (isset($_POST['submit']) && !empty($_POST['submit'])) {
 
+    /*if ((str_word_count($phone) > 10) || (str_word_count($phone) < 10)) {
+        echo "<script>alert('please enter valid phone number');
+        window.location.href='../Owner/owner_reg.php';</script>";
+        exit();
+    }*/
+
     if ($pass != $repass) {
         echo "<script>alert('please confirm your password');
         window.location.href='../Owner/owner_reg.php';</script>";
         exit();
     }
+
 
     $dup = pg_query($db, "select * from owner_login");
     while ($data = pg_fetch_array($dup)) {
@@ -24,12 +31,24 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
                 window.location.href='../Owner/owner_login.php';</script>";
             exit();
         }
+        if ($uname == $data['username']) {
+            echo "<script>alert('username already taken. Please try with another username');
+                window.location.href='../Owner/owner_reg.php';</script>";
+        }
     }
-    $sql = "insert into owner_login(name, gender, dob, ph_no, email, username, password) values('$name','$gender','$dob', $phone, '$email', '$uname','$pass')";
+
+    if (is_uploaded_file($_FILES['photo']['tmp_name'])) {
+        $target_file = $uname . '.jpg';
+        move_uploaded_file($_FILES['photo']['tmp_name'], '../../Uploaded_Images/User/Owner/' . $target_file);
+    } else {
+        $target_file = $uname . '.jpg';
+        copy("../../Uploaded_Images/User/default.jpg", "../../Uploaded_Images/User/Owner/$target_file");
+    }
+
+    $sql = "insert into owner_login(name, gender, dob, ph_no, email, username, password, status, image, reg_time) values('$name','$gender','$dob', $phone, '$email', '$uname','$pass','pending','$target_file',now())";
     $ret = pg_query($db, $sql);
-    echo "<script>alert('Records added successfully');
+    echo "<script>alert('Account sent for verification');
                 window.location.href='../Owner/owner_login.php';</script>";
-    pg_close();
 }
 ?>
 
@@ -125,7 +144,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
 
 <body>
     <div class="container" style="margin-top: 3em;">
-        <form action="" method="post">
+        <form action="" method="post" enctype="multipart/form-data">
             <div class="row" style="display: flex;justify-content: center;">
                 <div class="col-sm-4">
                     <table style="display: flex;justify-content: center;">
@@ -133,6 +152,11 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
                         <tr>
                             <th>Full Name </th>
                             <td><input class="txt" type="text" name="name" required></td>
+                        </tr>
+                        <tr>
+                            <th>Profile Image </th>
+                            <td><input class="txt" type="file" name="photo" accept="image/*">
+                            </td>
                         </tr>
                         <tr>
                             <th style="line-height: 2rem;">Gender </th>
@@ -149,7 +173,7 @@ if (isset($_POST['submit']) && !empty($_POST['submit'])) {
                             <td><input class="txt" type="date" name="date" required></td>
                         <tr>
                             <th>Phone Number</th>
-                            <td><input class="txt" type="tel" name="phone" required></td>
+                            <td><input class="txt" type="tel" name="phone" pattern="[789][0-9]{9}" required></td>
                         </tr>
                         <tr>
                             <th>Email</th>

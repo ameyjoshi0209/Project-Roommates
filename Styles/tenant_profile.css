@@ -1,0 +1,123 @@
+body {
+    background: rgb(99, 39, 120)
+}
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #BA68C8
+}
+
+.profile-button {
+    background: rgb(99, 39, 120);
+    box-shadow: none;
+    border: none
+}
+
+.profile-button:hover {
+    background: #682773
+}
+
+.profile-button:focus {
+    background: #682773;
+    box-shadow: none
+}
+
+.profile-button:active {
+    background: #682773;
+    box-shadow: none
+}
+
+.back:hover {
+    color: #682773;
+    cursor: pointer
+}
+
+.labels {
+    font-size: 11px
+}
+
+.add-experience:hover {
+    background: #BA68C8;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px #BA68C8
+}
+
+.sem-bag {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    background-position: top;
+    width: 100%;
+    height: 5rem;
+    border-radius: 0 0 11rem 11rem;
+}
+
+#nav-contain {
+    margin: 20px;
+    width: 95%;
+}
+
+.nav-prof {
+    padding: 0;
+    margin-top: -12px;
+    height: 45px;
+    width: 45px;
+}
+
+.btn-outline-primary {
+    margin-top: 4px;
+    cursor: pointer;
+    transition: all 0.4s;
+    border-radius: 50px;
+}
+
+#nav-btn:hover {
+    background-color: #ffffffb8;
+    color: #2F56B0;
+}
+
+#nav-btn:active {
+    background-color: rgb(98, 98, 98);
+    transform: translateY(4px);
+}
+
+.navbar-toggler {
+    float: left;
+    margin-left: 10px;
+    transition: all 0.5s;
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler-icon:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.navbar-toggler:active {
+    background-color: rgb(128, 128, 128);
+    transform: translateY(7px);
+}
+
+.navbar-brand {
+    float: left;
+    margin-right: auto;
+    margin-left: 15px;
+}
+
+#navlink {
+    margin-left: 15px;
+    border-radius: 25px;
+    transition: all 0.6s;
+}
+
+#navlink:hover {
+    transform: translateX(4px);
+}
+
+#navlink:active {
+    background-color: rgb(166, 166, 166);
+    transform: translateY(5px), translateX(-4px);
+}

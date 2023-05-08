@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans&display=swap');
 
 * {
     margin: 0;
@@ -93,38 +93,48 @@
 }
 
 .fil {
-    background-color: aquamarine;
-    border-radius: 10px;
+    background-color: rgb(111, 6, 181);
+    color: white;
+    border-radius: 20px;
     width: 150px;
-    height: 30px;
+    height: 37px;
     font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
 body {
-    background-image: linear-gradient(black, white);
+    background: burlywood;
 }
 
 .card {
-    width: 250px !important;
-    background-image: linear-gradient(rgb(175, 255, 255), rgb(239, 241, 163));
-    border: 3px black solid;
+    width: 340px !important;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background: radial-gradient(circle, rgba(238, 174, 202, 1) 0%, rgba(148, 187, 233, 1) 100%);
+    border: 2px brown solid;
     border-radius: 30px;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
-img {
-    padding: 15px;
-    width: 210px;
-    height: 150px;
+.view {
+    background-color: palevioletred;
+    border: 2px purple solid;
+    text-decoration: none !important;
+    border-radius: 20px;
+    padding: 7px 25px;
+    transition: all 0.6s;
 }
 
-btn {
-    justify-content: right;
+.view:hover {
+    background-color: #0f7ae4;
+    color: white;
 }
 
-.rounded-circle {
-    padding: 3px;
-    margin-top: -20px;
-    height: 52px;
-    width: 52px;
+.rounded-circle-1 {
+    border-radius: 50%;
+    border: none;
+    box-shadow: none;
+    outline: none;
+    padding: 0;
+    margin-top: -12px;
+    height: 45px;
+    width: 45px;
 }

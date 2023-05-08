@@ -1,0 +1,76 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: lightpink;
+}
+
+#owner-btn:focus #owner-btn:active {
+    outline: none !important;
+    box-shadow: none;
+}
+
+
+#owner-btn {
+    color: rgb(0, 123, 255);
+    text-align: center;
+    background: #ffffffd5;
+    width: 150px;
+    outline: sienna solid 2px;
+    cursor: pointer;
+    transition: all 0.4s;
+    border-radius: 50px;
+}
+
+#owner-btn:hover {
+    background-color: #2F56B0;
+    color: #ffffff;
+}
+
+#owner-btn:active {
+    background-color: rgb(98, 98, 98);
+    transform: translateY(4px);
+}
+
+#usr-card {
+    background-color: oldlace;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-clip: border-box;
+    border: none;
+    border-radius: 2rem;
+}
+
+.edit-btn {
+    background-color: skyblue;
+    cursor: pointer;
+    padding: 6px;
+    border: 2px solid blueviolet;
+    width: 110px;
+    border-radius: 50px;
+    transition: all 0.5s;
+}
+
+.edit-btn:hover {
+    background-color: #0c74ecdf;
+    color: #ffffff;
+}
+
+.edit-btn:active {
+    background-color: rgb(98, 98, 98);
+    transform: translateY(4px);
+}
+
+.dropdown-toggle::after {
+    display: none !important;
+}
+
+.btn {
+    border-radius: 50px;
+}
+
+.offcanvas-body {
+    flex-grow: 0;
+}

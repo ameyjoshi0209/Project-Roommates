@@ -1,18 +1,32 @@
 <?php
 session_start();
 $conn = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres") or die("<script>alert('Error Not Connected');</script>");
-$name = $_GET['id'];
-$result = pg_query($conn, "SELECT * FROM logindata WHERE login_id='$name'");
+$name = $_GET['name'];
+$result = pg_query($conn, "SELECT * FROM logindata WHERE username='$name'");
 $data = pg_fetch_assoc($result);
 if (isset($_POST['submit']) && !empty($_POST['submit'])) {
-    $result = pg_query($conn, "UPDATE logindata SET name = '$_POST[name]',gender='$_POST[gender]',dob='$_POST[dob]',ph_no='$_POST[ph_no]',email='$_POST[email]',username='$_POST[username]',password='$_post[password]' where login_id='$name' ") or die("<H1>Error</h1>");
 
-    if (!$result) {
-        echo "<script>alert('Error');
+    if (is_uploaded_file($_FILES['photo']['tmp_name'])) {
+        $target_file = $name . '.jpg';
+        move_uploaded_file($_FILES['photo']['tmp_name'], '../../Uploaded_Images/User/Tenant/' . $target_file);
+        $result = pg_query($conn, "UPDATE logindata SET name = '$_POST[name]',gender='$_POST[gender]',dob='$_POST[dob]',ph_no='$_POST[ph_no]',email='$_POST[email]',username='$_POST[username]',password='$_post[password]' where username='$name' ") or die("<H1>Error</h1>");
+        if (!$result) {
+            echo "<script>alert('Error');
                 window.location.href='../Admin/update_tenant.php';</script>";
+        } else {
+            echo "<script>alert('Tenant Updated Successfully');
+                window.location.href='../Admin/admin_home.php';</script>";
+        }
     } else {
-        echo "<script>alert('Record Updated Successfully');
-                window.location.href='../Admin/admin_tenant.php';</script>";
+        copy("../../Uploaded_Images/User/default.jpg", "../../Uploaded_Images/User/Tenant/$name.jpg");
+        $result = pg_query($conn, "UPDATE logindata SET name = '$_POST[name]',gender='$_POST[gender]',dob='$_POST[dob]',ph_no='$_POST[ph_no]',email='$_POST[email]',username='$_POST[username]',password='$_POST[password]' where username='$name' ") or die("<h1>Error</h1>");
+        if (!$result) {
+            echo "<script>alert('Error');
+                window.location.href='../Admin/update_tenant.php';</script>";
+        } else {
+            echo "<script>alert('Tenant Updated Successfully');
+                window.location.href='../Admin/admin_home.php';</script>";
+        }
     }
 }
 pg_close();
@@ -108,14 +122,18 @@ pg_close();
 
 <body>
     <div class="container" style="margin-top: 3em;">
-        <form action="#" method="post">
+        <form method="post" enctype="multipart/form-data">
             <div class="row" style="display: flex;justify-content: center;">
                 <div class="col-sm-4">
                     <table style="display: flex;justify-content: center;">
-                        <h1 style="margin-bottom: 25px;">Update Owner <?php echo $name; ?></h1><br>
+                        <h1 style="margin-bottom: 25px;">Update Tenant <?php echo $data["name"]; ?></h1><br>
                         <tr>
                             <th>Full Name </th>
                             <td><input class="txt" type="text" name="name" value="<?php echo $data['name']; ?>"></td>
+                        </tr>
+                        <tr>
+                            <th>Profile Image</th>
+                            <td><input class="txt" type="file" name="photo" accept="image/*"></td>
                         </tr>
                         <tr>
                             <th style="line-height: 2rem;">Gender </th>

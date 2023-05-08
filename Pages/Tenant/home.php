@@ -1,6 +1,7 @@
 <?php session_start();
 
 if (!empty($_SESSION["uname"])) {
+    $db = pg_connect("host=localhost port=5432 dbname=project user=postgres password=postgres");
 ?>
     <html>
 
@@ -31,11 +32,13 @@ if (!empty($_SESSION["uname"])) {
                     </div>
                     <div class="btn-group dropstart">
                         <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style="top: 6px;right: 5px;border: none;">
-                            <img src="https://t3.ftcdn.net/jpg/00/64/67/52/360_F_64675209_7ve2XQANuzuHjMZXP3aIYIpsDKEbF5dD.jpg" class="rounded-circle">
+                            <img src="<?php echo $_SESSION["uimage"]; ?>" class="rounded-circle-1">
                         </button>
                         <ul class="dropdown-menu">
                             <h6 class="dropdown-header"><?php echo $_SESSION["uname"] ?></h6>
-                            <li><a class="dropdown-item" href="../Tenant/tenant_logout.php">Logout</a></li>
+                            <li><a class="dropdown-item" href="../Tenant/tenant_profile.php"><img src="../../Img/Admin-Home/profile.svg" height="20" width="25" style="margin-right: 4px;"> My Profile</a></li>
+                            <li><a class="dropdown-item" href="../Tenant/tenant_rented_prop.php"><img src="../../Img/Admin-Home/houses.svg" height="20" width="25" style="margin-right: 4px;"> My Property</a></li>
+                            <li><a class="dropdown-item" href="../Tenant/tenant_logout.php"><img src="../../Img/Admin-Home/logout.svg" height="18" width="22" style="margin-right: 8px;"> Logout</a></li>
                         </ul>
                     </div>
                 </nav>
@@ -53,55 +56,71 @@ if (!empty($_SESSION["uname"])) {
             <div class="scrolling-wrapper row flex-row flex-nowrap mt-1 pb-4 pt-3">
 
                 <div class="col">
-                    <div class="card card-block">
-                        <img src="https://cdn.iconscout.com/icon/free/png-512/shanivarwada-1-155226.png?f=avif&w=512" class="img-fluid card-img-top">
-                        <h5 style="text-align: center;">Pune</h5>
-                    </div>
+                    <a href="sorted.php?name=Pune" id="city-link">
+                        <div class="card card-block">
+                            <img src="https://cdn.iconscout.com/icon/free/png-512/shanivarwada-1-155226.png?f=avif&w=512" class="img-fluid card-img-top">
+                            <h5 style="text-align: center;">Pune</h5>
+                        </div>
+                    </a>
                 </div>
                 <div class="col">
-                    <div class="card card-block">
-                        <img src="https://cdn.iconscout.com/icon/free/png-512/charminar-1-119696.png?f=avif&w=512" class="img-fluid card-img-top">
-                        <h5 style="text-align: center;">Hyderabad</h5>
-                    </div>
+                    <a href="sorted.php?name=Hyderabad" id="city-link">
+                        <div class="card card-block">
+                            <img src="https://cdn.iconscout.com/icon/free/png-512/charminar-1-119696.png?f=avif&w=512" class="img-fluid card-img-top">
+                            <h5 style="text-align: center;">Hyderabad</h5>
+                        </div>
+                    </a>
                 </div>
                 <div class="col">
-                    <div class="card card-block">
-                        <img src="https://cdn.iconscout.com/icon/free/png-512/gatewayofindia-1-119691.png?f=avif&w=512" class="img-fluid card-img-top">
-                        <h5 style="text-align: center;">Mumbai</h5>
-                    </div>
+                    <a href="sorted.php?name=Mumbai" id="city-link">
+                        <div class="card card-block">
+                            <img src="https://cdn.iconscout.com/icon/free/png-512/gatewayofindia-1-119691.png?f=avif&w=512" class="img-fluid card-img-top">
+                            <h5 style="text-align: center;">Mumbai</h5>
+                        </div>
+                    </a>
                 </div>
                 <div class="col">
-                    <div class="card card-block">
-                        <img src="https://cdn.iconscout.com/icon/free/png-512/delhi-139357.png?f=avif&w=512" class="img-fluid card-img-top">
-                        <h5 style="text-align: center;">Delhi</h5>
-                    </div>
+                    <a href="sorted.php?name=Delhi" id="city-link">
+                        <div class="card card-block">
+                            <img src="https://cdn.iconscout.com/icon/free/png-512/delhi-139357.png?f=avif&w=512" class="img-fluid card-img-top">
+                            <h5 style="text-align: center;">Delhi</h5>
+                        </div>
+                    </a>
                 </div>
                 <div class="col">
-                    <div class="card card-block">
-                        <img src="https://cdn.iconscout.com/icon/free/png-512/surat-155248.png?f=avif&w=512" class="img-fluid card-img-top">
-                        <h5 style="text-align: center;">Gujarat</h5>
-                    </div>
+                    <a href="sorted.php?name=Gujarat" id="city-link">
+                        <div class="card card-block">
+                            <img src="https://cdn.iconscout.com/icon/free/png-512/surat-155248.png?f=avif&w=512" class="img-fluid card-img-top">
+                            <h5 style="text-align: center;">Gujarat</h5>
+                        </div>
+                    </a>
                 </div>
                 <div class="col">
-                    <div class="card card-block">
-                        <img src="https://cdn.iconscout.com/icon/free/png-512/assembly-1-119693.png?f=avif&w=512" class="img-fluid card-img-top">
-                        <h5 style="text-align: center;">Banglore</h5>
-                    </div>
+                    <a href="sorted.php?name=Bangalore" id="city-link">
+                        <div class="card card-block">
+                            <img src="https://cdn.iconscout.com/icon/free/png-512/assembly-1-119693.png?f=avif&w=512" class="img-fluid card-img-top">
+                            <h5 style="text-align: center;">Bangalore</h5>
+                        </div>
+                    </a>
                 </div>
                 <div class="col">
-                    <div class="card card-block">
-                        <img src="https://cdn.iconscout.com/icon/free/png-512/kerala-1-119688.png?f=avif&w=512" class="img-fluid card-img-top">
-                        <h5 style="text-align: center;">Kerala</h5>
-                    </div>
+                    <a href="sorted.php?name=Kerala" id="city-link">
+                        <div class="card card-block">
+                            <img src="https://cdn.iconscout.com/icon/free/png-512/kerala-1-119688.png?f=avif&w=512" class="img-fluid card-img-top">
+                            <h5 style="text-align: center;">Kerala</h5>
+                        </div>
+                    </a>
                 </div>
                 <div class="col">
-                    <div class="card card-block">
-                        <img src="https://cdn.iconscout.com/icon/free/png-512/victoria-1-119694.png?f=avif&w=512" class="img-fluid card-img-top">
-                        <h5 style="text-align: center;">Kolkata</h5>
-                    </div>
+                    <a href="sorted.php?name=Kolkata" id="city-link">
+                        <div class="card card-block">
+                            <img src="https://cdn.iconscout.com/icon/free/png-512/victoria-1-119694.png?f=avif&w=512" class="img-fluid card-img-top">
+                            <h5 style="text-align: center;">Kolkata</h5>
+                        </div>
+                    </a>
                 </div>
             </div>
-            <a href="../sorted.html" class="more-card-link">Explore more</a>
+            <a href="../Tenant/sorted.php" class="more-card-link">Explore more</a>
         </div>
 
 
