@@ -98,17 +98,6 @@
     transform: translateY(5px), translateX(-4px);
 }
 
-.logo-bag {
-    position: absolute;
-    margin-top: -10em;
-    width: 90%;
-    height: 220px;
-    background-image: url("../Img/logo2-trnslp1.png");
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
-}
-
 #property-card {
     transition: all 0.4s;
     margin: 0 0.5em;

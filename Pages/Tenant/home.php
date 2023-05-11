@@ -52,7 +52,7 @@ if (!empty($_SESSION["uname"])) {
 
         <!-- CITY CARD LAYOUT -->
         <div class="container-fluid" style="text-align: center;">
-            <h1 style="margin-top: 2.5em;">Recommended Cities</h1>
+            <h1 style="margin-top: .8em;margin-bottom: .3em;">Recommended Cities</h1>
             <div class="scrolling-wrapper row flex-row flex-nowrap mt-1 pb-4 pt-3">
 
                 <div class="col">
@@ -267,19 +267,15 @@ if (!empty($_SESSION["uname"])) {
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     </body>
 
-    <!-- FOOTER -->
     <footer class="text-center text-lg-start text-white mt-5" style="background-color: #bc700d90;">
 
-        <!-- SECTION: SOCIAL MEDIA-->
         <section class="d-flex justify-content-between p-0" style="background-color: #5b3f03d7">
-            <!-- Left Side -->
             <div class="mt-3" style="margin-left: 20px;">
                 <span>
                     <h5>Get connected with us</h5>
                 </span>
             </div>
 
-            <!-- Right Side -->
             <div>
                 <a href="" class="btn me-0" id="logo-btn">
                     <img src="../../Img/Home-Page/google.svg" height="40px" width="30px">
@@ -302,28 +298,21 @@ if (!empty($_SESSION["uname"])) {
             </div>
         </section>
 
-        <!-- SECTION: LINKS  -->
         <section class="">
             <div class="container text-center text-md-start mt-5">
-                <!-- Grid row -->
                 <div class="row mt-3">
-                    <!-- Grid column -->
                     <div class="col-md-2 col-lg-4 col-xl-3 mx-auto mb-4">
-                        <!-- Content -->
                         <img src="../../Img/logo2-trnslp1.png" height="70px" width="300px">
                         <p class="mt-4">
-                            Short info about website will appear here
+                            find your perfect home
                         </p>
                     </div>
-                    <!-- Grid column -->
 
-                    <!-- Grid column -->
                     <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-                        <!-- Links -->
                         <h6 class="text-uppercase fw-bold">Useful links</h6>
                         <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #593405; height: 3px" />
                         <p>
-                            <a href="#!" class="text-white">Your Account</a>
+                            <a href="../Tenant/tenant_profile.php" class="text-white">Your Account</a>
                         </p>
                         <p>
                             <a href="../about.html" class="text-white">About</a>
@@ -332,11 +321,8 @@ if (!empty($_SESSION["uname"])) {
                             <a href="#!" class="text-white">FAQ's</a>
                         </p>
                     </div>
-                    <!-- Grid column -->
 
-                    <!-- Grid column -->
                     <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-                        <!-- Links -->
                         <h6 class="text-uppercase fw-bold">Contact</h6>
                         <hr class="mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: #593405; height: 3px" />
                         <p><i class="fas fa-home mr-3"></i>Indira College, Wakad</p>
@@ -344,21 +330,15 @@ if (!empty($_SESSION["uname"])) {
                         <p><i class="fas fa-phone mr-3"></i> +91 1234567890</p>
                         <p><i class="fas fa-print mr-3"></i> +91 0987654321</p>
                     </div>
-                    <!-- Grid column -->
                 </div>
-                <!-- Grid row -->
             </div>
         </section>
-        <!-- Section: Links  -->
 
-        <!-- Copyright -->
         <div class="text-center p-1" style="background-color: rgba(0, 0, 0, 0.262)">
             © 2023 Copyright:
             <a class="text-white" href="#">roommates.com</a>
         </div>
-        <!-- Copyright -->
     </footer>
-    <!-- Footer -->
 
     </html>
 <?php

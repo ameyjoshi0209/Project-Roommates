@@ -47,8 +47,10 @@ $result = pg_query($con, $sql) or die("incorrect");
                         <div class="card-body">
                             <h5 class="card-title">
                                 <?php echo $row['p_name']; ?></h5>
-                            <b>Rent:<?php echo $row['p_rent']; ?>
-                                <p class="card-text">Type:<?php echo $row['p_bhk']; ?></p>
+                            <b>Rent: <?php echo $row['p_rent']; ?>
+                                <p class="card-text">Type: <?php echo $row['p_bhk']; ?>
+                                    <br>City: <?php echo $row['p_city']; ?>
+                                </p>
                             </b>
                             <a href="../Tenant/detail.php?pid=<?php echo $row['p_id']; ?>">
                                 <button name="detail" class="mt-3 btn view">View</button>
