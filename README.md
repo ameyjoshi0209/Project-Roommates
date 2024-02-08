@@ -1,4 +1,10 @@
-# WEBSITE FOR RENTING PG/FLAT FOR STUDENTS/WORKING PROFESSIONALS
+# ROOMMATES
+
+ [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Size](https://4.vercel.app/github/size/ameyjoshi0209/Roommates?icon=github)](src)
+[![GitHub](https://badgen.net/badge/icon/github?icon=github&label)](https://github.com)
+[![Windows](https://badgen.net/badge/icon/windows?icon=windows&label)](https://microsoft.com/windows/)
+[![Visual Studio Code](https://img.shields.io/badge/--007ACC?logo=visual%20studio%20code&logoColor=ffffff)](https://code.visualstudio.com/)
 
 &nbsp;
 ## INTRODUCTION TO THE SYSTEM
